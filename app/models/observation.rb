@@ -12,7 +12,4 @@ class Observation
   field :Location
   field :Notes
   field :SightingDate
-  field :SightingID
-  field :SpotterID
-  field :WildlifeID
 end

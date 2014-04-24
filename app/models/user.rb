@@ -9,5 +9,4 @@ class User
   field :Email, 	:type => String
   field :FirstName, :type => String
   field :LastName, 	:type => String
-  field :SpotterID
 end

@@ -1,0 +1,7 @@
+<h1>Birds</h1>
+
+<% logger.debug "index.html animals: #{@animals.count}" %>
+
+<% @animals.each do |a| %>
+	<%= render partial: "profile", locals: { animal: a } %>
+<% end %>
