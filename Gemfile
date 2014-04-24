@@ -29,6 +29,9 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+# rr gem for mocking & stubbing
+gem 'rr'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
