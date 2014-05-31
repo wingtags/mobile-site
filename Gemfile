@@ -24,13 +24,31 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+# Include Backbone and Underscore for client-side js
+gem 'backbone-on-rails'
+
+# Zurb foundation for grid layout and styling
+gem 'zurb-foundation'
+
+
+
+group :development, :test do
+  # Javascript test runner
+	gem 'jasmine'	
+  gem 'jasmine-jquery-rails'
+  # Javascript mocking & stubbing
+  gem 'sinon-rails'
+
+	# Ruby mocking & stubbing
+  gem 'rr'
+end
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
 
-# rr gem for mocking & stubbing
-gem 'rr'
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
