@@ -30,16 +30,18 @@ gem 'backbone-on-rails'
 # Zurb foundation for grid layout and styling
 gem 'zurb-foundation'
 
-
+# Manage environment variables
+gem 'figaro'
 
 group :development, :test do
-  # Javascript test runner
 	gem 'jasmine'	
   gem 'jasmine-jquery-rails'
-  # Javascript mocking & stubbing
   gem 'sinon-rails'
 
-	# Ruby mocking & stubbing
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'capybara-webkit'
+  gem 'turn'
   gem 'rr'
 end
 

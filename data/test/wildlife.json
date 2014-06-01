@@ -1,0 +1,29 @@
+[
+  {
+    "Colour": "Yellow",
+    "CreatedDate": 1333112400000,
+    "Gender": "",
+    "Name": "Columbus",
+    "Notes": "",
+    "Tag": 1,
+    "WildlifeID": "1"
+  },
+  {
+    "Colour": "Yellow",
+    "CreatedDate": 1333112400000,
+    "Gender": "",
+    "Name": "Mr Squiggle",
+    "Notes": "",
+    "Tag": 16,
+    "WildlifeID": "13"
+  },
+  {
+    "Colour": "Yellow",
+    "CreatedDate": 1336106357943,
+    "Gender": "Male",
+    "Name": "Lancelot",
+    "Notes": "",
+    "Tag": 47,
+    "WildlifeID": "48"
+  }
+]

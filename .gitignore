@@ -31,3 +31,6 @@ config/secrets.yml
 
 # Ignore rvm
 .rvmrc
+
+# Ignore application configuration
+/config/application.yml

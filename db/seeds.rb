@@ -5,3 +5,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+data_dir = File.expand_path('../../data/test', __FILE__)
+files = ['wildlife.json', 'sightings.json', 'observations.json']
+system 'rethinkdb', 'import', '--table', 'Wildlife', '--pkey', 'WildlifeID', '-f', 'wildlife.json', '--format', 'json';
+
+NoBrainer.run { |r| r.table()}
