@@ -147,3 +147,12 @@ App.Geocoder = Backbone.Model.extend({
   
   
 App.Address = Backbone.Model.extend({ });
+
+App.Observation = Backbone.Model.extend({
+  // image
+  // latitude
+  // longitude
+  // location
+  // timestamp
+  // wildlife
+});

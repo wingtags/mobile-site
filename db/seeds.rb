@@ -6,8 +6,15 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-data_dir = File.expand_path('../../data/test', __FILE__)
-files = ['wildlife.json', 'sightings.json', 'observations.json']
-system 'rethinkdb', 'import', '--table', 'Wildlife', '--pkey', 'WildlifeID', '-f', 'wildlife.json', '--format', 'json';
+if Rails.env == 'production' 
+  throw "You attempted to seed the production database. That's a big no-no. Aborting."
+end
 
-NoBrainer.run { |r| r.table()}
+
+db_name = 'Wingtags_' + Rails.env
+
+NoBrainer.run { |r| r.db_drop("#{db_name}")}
+
+system 'rethinkdb', 'import', '--table', "#{db_name}.Wildlife", '--pkey', 'WildlifeID', '-f', '/Users/Nick/Dev/wingtags/wingtags/data/test/wildlife.json', '--format', 'json';
+system 'rethinkdb', 'import', '--table', "#{db_name}.Spotters", '--pkey', 'SpotterID', '-f', '/Users/Nick/Dev/wingtags/wingtags/data/test/spotters.json', '--format', 'json';
+system 'rethinkdb', 'import', '--table', "#{db_name}.Sightings", '--pkey', 'SightingID', '-f', '/Users/Nick/Dev/wingtags/wingtags/data/test/sightings.json', '--format', 'json';

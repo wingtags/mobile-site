@@ -15,22 +15,6 @@ describe AnimalProfileExhibit do
     "id"=>"16"}
   }
 
-  
-  
-
-
-	#before do
-	#	@data = {
-	#		"Colour"=>"Yellow",
-  #		"CreatedDate"=>1333112400000,
-  #		"Gender"=>"",
-  #		"ImageUrl"=>"",
-  #		"LastSighting"=>1334277559280,
-  #		"Name"=>"CockaStu",
-  #		"Tag"=>23,
-  #		"id"=>"16"}
-  #end
-
   it 'initializes from a hash' do
     puts data
     subject.Colour.must_equal "Yellow"
