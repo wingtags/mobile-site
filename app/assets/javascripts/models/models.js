@@ -154,5 +154,5 @@ App.Observation = Backbone.Model.extend({
   // longitude
   // location
   // timestamp
-  // wildlife
+  // tag
 });

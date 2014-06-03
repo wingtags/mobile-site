@@ -1,7 +1,7 @@
 JST = {};
 
-JST['animal-identifier'] = _.template("<div class='row'><div class='large-6 columns'><input type='number' min='0' max='999' id='animal-identifier' placeholder='Tag number' autofocus></div></div>");
-JST['location/address'] = _.template("<div id='address-template'><div class='row'><div class='large-6 columns'><div class='row'><div class='large-12 columns'><label for='suburb'>Suburb</label><input id='suburb' name='Suburb' type='text' /></div></div><div class='row'><div class='large-12 columns'><label for='street'>Street</label><input id='street' name='Street' type='text' /></div></div></div></div>");
+JST['animal-identifier'] = _.template("<div class='row'><div class='large-6 columns'><label for='animal-identifier'>Tag number</label><input type='number' id='animal-identifier' name='animal-identifier' min='0' max='999' placeholder='Tag number' autofocus></div></div>");
+JST['location/address'] = _.template("<div id='address-template'><div class='row'><div class='large-6 columns'><div class='row'><div class='large-12 columns'><label for='suburb'>Suburb</label><input id='suburb' name='suburb' type='text' /></div></div><div class='row'><div class='large-12 columns'><label for='street'>Street</label><input id='street' name='street' type='text' /></div></div></div></div>");
 JST['location/gps'] = _.template("<div id='coordinate-template'><div class='row'><div class='large-6 columns'><div class='panel'><p><span id='gps-status'>Latitude: <%= latitude %>, Longitude: <%= longitude %></span></p></div></div></div>");
 JST['location/geocoded-address'] = _.template("<div class='row'><div class='large-6 columns'><div class='panel'><p><span id='geocoded-address'><%= addressString %></span></p></div></div></div>");
 JST['location/pending'] = _.template("<div id='coordinate-template'><div class='row'><div class='large-6 columns'><div class='panel'><p><span id='gps-status'>Getting Location...</span></p></div></div></div>");

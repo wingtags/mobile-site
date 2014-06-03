@@ -35,7 +35,7 @@ App.ImageView = Backbone.View.extend({
 
 App.AppView = Backbone.View.extend({
    tagName: 'form', 
-   attributes: { 'method':'POST', 'ENCTYPE':'multipart/form-data', 'ACTION':'/new'},
+   attributes: { 'method':'POST', 'ENCTYPE':'multipart/form-data', 'ACTION':'/observations/new'},
    initialize: function(options) {
      _.bindAll(this, 
        'render', 
@@ -55,6 +55,7 @@ App.AppView = Backbone.View.extend({
    },
    render: function() {
      this.subviews.forEach(this.renderSubview);
+     //this.addCsrfToken();
      this.$el.append(JST['submit']());
      return this;
    },
@@ -75,7 +76,11 @@ App.AppView = Backbone.View.extend({
      if (this.imageProvider.isAvailable()) {
        this.subviews.push(new App.ImageView());
      }
-   }
+   }//,
+   //addCsrfToken: function() {
+   //   var token = $("meta[name='csrf-token']").attr('content');
+   //   this.$el.append("<input type='hidden' name='authenticity_token' value='" + token + "'>");
+   //}
  });
 
 
