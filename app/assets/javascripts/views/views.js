@@ -35,6 +35,7 @@ App.ImageView = Backbone.View.extend({
 
 App.AppView = Backbone.View.extend({
    tagName: 'form', 
+   attributes: { 'method':'POST', 'ENCTYPE':'multipart/form-data', 'ACTION':'/new'},
    initialize: function(options) {
      _.bindAll(this, 
        'render', 
