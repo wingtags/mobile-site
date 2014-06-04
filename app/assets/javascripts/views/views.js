@@ -55,7 +55,7 @@ App.AppView = Backbone.View.extend({
    },
    render: function() {
      this.subviews.forEach(this.renderSubview);
-     //this.addCsrfToken();
+     this.addCsrfToken();
      this.$el.append(JST['submit']());
      return this;
    },
@@ -76,11 +76,11 @@ App.AppView = Backbone.View.extend({
      if (this.imageProvider.isAvailable()) {
        this.subviews.push(new App.ImageView());
      }
-   }//,
-   //addCsrfToken: function() {
-   //   var token = $("meta[name='csrf-token']").attr('content');
-   //   this.$el.append("<input type='hidden' name='authenticity_token' value='" + token + "'>");
-   //}
+   },
+   addCsrfToken: function() {
+      var token = $("meta[name='csrf-token']").attr('content');
+      this.$el.append("<input type='hidden' name='authenticity_token' value='" + token + "'>");
+   }
  });
 
 
