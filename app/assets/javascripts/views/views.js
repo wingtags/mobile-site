@@ -34,54 +34,64 @@ App.ImageView = Backbone.View.extend({
 
 
 App.AppView = Backbone.View.extend({
-   tagName: 'form', 
-   attributes: { 'method':'POST', 'ENCTYPE':'multipart/form-data', 'ACTION':'/observations/new'},
-   initialize: function(options) {
-     _.bindAll(this, 
-       'render', 
-       'renderSubview',
-       'initializeSubviews',
-       'initializeLocationView',
-       'initializeImageView');
+  tagName: 'form', 
+
+  attributes: { 'method':'POST', 'ENCTYPE':'multipart/form-data', 'ACTION':'/observations/new'},
+
+  initialize: function(options) {
+    _.bindAll(this, 
+      'render', 
+      'renderSubview',
+      'initializeSubviews',
+      'initializeLocationView',
+      'initializeImageView'
+    );
 
     if (options !== undefined) {
       this.geocoder = options.geocoder;
       this.locationProvider = options.locationProvider;
       this.imageProvider = options.imageProvider;
     };
-     this.subviews = [];
-     this.locationProvider.startUpdatingLocation();
-     this.initializeSubviews();
-   },
-   render: function() {
-     this.subviews.forEach(this.renderSubview);
-     this.addCsrfToken();
-     this.$el.append(JST['submit']());
-     return this;
-   },
-   renderSubview: function(subview, index, array) {
-     var el = subview.render().el;
-     this.$el.append(el);
-   },
-   initializeSubviews: function() {
-     this.subviews.push(new App.IdentifierView());
-     this.initializeLocationView();
-     this.initializeImageView();
-   },
-   initializeLocationView: function() {
-     var view = new App.LocationView({ locationProvider: this.locationProvider });
-     this.subviews.push(view);
-   },
-   initializeImageView: function() {
-     if (this.imageProvider.isAvailable()) {
-       this.subviews.push(new App.ImageView());
-     }
-   },
-   addCsrfToken: function() {
-      var token = $("meta[name='csrf-token']").attr('content');
-      this.$el.append("<input type='hidden' name='authenticity_token' value='" + token + "'>");
-   }
- });
+
+    this.subviews = [];
+    this.locationProvider.startUpdatingLocation();
+    this.initializeSubviews();
+  },
+
+  render: function() {
+    this.subviews.forEach(this.renderSubview);
+    this.addCsrfToken();
+    return this;
+  },
+
+  renderSubview: function(subview, index, array) {
+    var el = subview.render().el;
+    this.$el.append(el);
+  },
+
+  initializeSubviews: function() {
+    this.subviews.push(new App.IdentifierView());
+    this.initializeLocationView();
+    this.initializeImageView();
+    this.subviews.push(new App.SubmitView());
+  },
+
+  initializeLocationView: function() {
+    var view = new App.LocationView({ locationProvider: this.locationProvider });
+    this.subviews.push(view);
+  },
+
+  initializeImageView: function() {
+    if (this.imageProvider.isAvailable()) {
+      this.subviews.push(new App.ImageView());
+    }
+  },
+
+  addCsrfToken: function() {
+     var token = $("meta[name='csrf-token']").attr('content');
+     this.$el.append("<input type='hidden' name='authenticity_token' value='" + token + "'>");
+  }
+});
 
 
 App.LocationView = Backbone.View.extend({
@@ -193,6 +203,46 @@ App.AddressView = Backbone.View.extend({
   render: function() {
     $(this.el).html(this.template());
     return this;
+  }
+});
+
+
+App.SubmitView = Backbone.View.extend({
+  template: JST['submit'],
+
+  events: {
+     'click #submit': 'handleSubmit'
+  },
+  
+  initialize: function() {
+    _.bindAll(this, 'render', 'handleSubmit');
+  },
+
+  render: function() {
+    $(this.el).html(this.template());
+    return this;
+  },
+
+  handleSubmit: function(event)
+  {
+    event.preventDefault();
+    console.log('Click submit');
+    var form = new FormData($('form'));
+    $.ajax({
+      url: 'observations/new',
+      type: 'POST',
+      data: form,
+      processData: false,
+      contentType: false,
+      success: function(xhr)
+      {
+        console.log(xhr.data);
+      },
+      error: function(xhr)
+      {
+        console.log(xhr.data);
+      }
+    });
   }
 });
 
