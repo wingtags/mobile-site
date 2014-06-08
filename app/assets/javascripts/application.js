@@ -18,12 +18,19 @@
 //= require underscore
 //= require backbone
 //
-//= require views/IdentifierView
+//= require templates/templates
+//
+//= require views/identifier_view
 //= require views/image_view
+//= require views/submit_view
+//= require views/address_view
+//= require views/coordinate_view
+//= require views/location_view
+//= require views/form_view
+//
 //= require_tree ../templates
 //= require_tree ./models
 //= require_tree ./collections
-//= require_tree ./views
 //= require_tree ./routers
 //= require_tree .
 
