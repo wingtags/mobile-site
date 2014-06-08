@@ -27,20 +27,9 @@ App.AppView = Backbone.View.extend({
     };
 
     this.model = new App.Observation();
-    this.subviews = [];
     this.locationProvider.startUpdatingLocation();
+    this.subviews = [];
     this.initializeSubviews();
-  },
-
-  render: function() {
-    this.subviews.forEach(this.renderSubview);
-    this.addCsrfToken();
-    return this;
-  },
-
-  renderSubview: function(subview, index, array) {
-    var el = subview.render().el;
-    this.$el.append(el);
   },
 
   initializeSubviews: function() {
@@ -51,8 +40,7 @@ App.AppView = Backbone.View.extend({
     return this;
   },
 
-  initializeIdentifierView: function()
-  {
+  initializeIdentifierView: function() {
     var view = new App.IdentifierView();
     this.listenTo(view, 'didUpdateAnimalIdentifier', this.updateAnimalIdentifier);
     this.subviews.push(view);
@@ -60,6 +48,7 @@ App.AppView = Backbone.View.extend({
 
   initializeLocationView: function() {
     var view = new App.LocationView({ locationProvider: this.locationProvider });
+    this.listenTo(view, 'didUpdateLocation2', this.updateLocation);
     this.subviews.push(view);
   },
 
@@ -76,6 +65,21 @@ App.AppView = Backbone.View.extend({
     this.listenTo(view, 'sendForm', this.preparePayload);
     this.subviews.push(view);
   },
+
+  render: function() {
+    this.subviews.forEach(this.renderSubview);
+    this.addCsrfToken();
+    return this;
+  },
+
+  renderSubview: function(subview, index, array) {
+    var el = subview.render().el;
+    this.$el.append(el);
+  },
+
+
+
+
 
   addCsrfToken: function() {
      var token = $("meta[name='csrf-token']").attr('content');
@@ -97,6 +101,10 @@ App.AppView = Backbone.View.extend({
 
     this.model.set('latitude', lat);
     this.model.set('longitude', lon);
+  },
+
+  updateLocation: function(location) {
+
   },
 
   updateImage: function(imageEl) {

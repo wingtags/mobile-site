@@ -38,16 +38,6 @@ describe("LocationView", function() {
       this.locationView.render();
       expect(this.locationView.el).not.toContainElement('span#gps-status');
     });
-
-    it("Renders a suburb field", function() {
-      var el = this.locationView.render().$el;
-      expect(el).toContainElement('#suburb');
-    });
-
-    it("Renders a street field", function() {
-      var el = this.locationView.render().$el;
-      expect(el).toContainElement('#street');
-    });
   });
 
   describe("When GPS is available", function() {
