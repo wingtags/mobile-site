@@ -18,6 +18,8 @@
 //= require underscore
 //= require backbone
 //
+//= require views/IdentifierView
+//= require views/image_view
 //= require_tree ../templates
 //= require_tree ./models
 //= require_tree ./collections

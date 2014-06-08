@@ -1,21 +1,33 @@
 var App = window.App != null ? window.App : {};
 
-App.IdentifierView = Backbone.View.extend({
-   //template: window.JST['animal-identifier'],
-   template: JST['animal-identifier'],
-   initialize: function() {
-     _.bindAll(this, 'render');
-   },
-   render: function() {
-     this.$el.html(this.template());
-     return this;
-   }
- });
+//App.IdentifierView = Backbone.View.extend({
+ // events: {
+ //  'keyup #animal-identifier': 'fireDidUpdateAnimalIdentifier'
+ // },
+
+ // template: JST['animal-identifier'],
+
+ // initialize: function() {
+ //   _.bindAll(this, 'render', 'fireDidUpdateAnimalIdentifier');
+ // },
+
+ // render: function() {
+ //   this.$el.html(this.template());
+ //   return this;
+ // },
+
+ // fireDidUpdateAnimalIdentifier: function() {
+ //  var value = $('#animal-identifier').val();
+ //  this.trigger('didUpdateAnimalIdentifier', value);
+ //  console.log('fire didUpdateAnimalIdentifier:' + value);
+ // }
+ //);
 
 
 App.ImageView = Backbone.View.extend({
    events: {
-     'click #camera-select': 'getImage'
+     'click #camera-select': 'getImage',
+     'change #camera-input': 'fireDidUpdateImage'
    },
    template: window.JST['image'],
    initialize: function() {
@@ -29,6 +41,11 @@ App.ImageView = Backbone.View.extend({
      event.preventDefault();
      console.log('imageView el: ', this.$el.find('#camera-input'));
      this.$el.find('#camera-input').click();
+   },
+   fireDidUpdateImage: function() {
+    var file = this.$el.find('#camera-input').get(0).files[0];
+    this.trigger('didUpdateImage', file);
+    console.log('didUpdateImage', file);
    }
  });
 
@@ -43,8 +60,14 @@ App.AppView = Backbone.View.extend({
       'render', 
       'renderSubview',
       'initializeSubviews',
+      'initializeIdentifierView',
       'initializeLocationView',
-      'initializeImageView'
+      'initializeImageView',
+      'initializeSubmitView',
+      'updateAnimalIdentifier',
+      'updateImage',
+      'preparePayload',
+      'send'
     );
 
     if (options !== undefined) {
@@ -53,6 +76,7 @@ App.AppView = Backbone.View.extend({
       this.imageProvider = options.imageProvider;
     };
 
+    this.model = new App.Observation();
     this.subviews = [];
     this.locationProvider.startUpdatingLocation();
     this.initializeSubviews();
@@ -70,10 +94,18 @@ App.AppView = Backbone.View.extend({
   },
 
   initializeSubviews: function() {
-    this.subviews.push(new App.IdentifierView());
+    this.initializeIdentifierView();
     this.initializeLocationView();
     this.initializeImageView();
-    this.subviews.push(new App.SubmitView());
+    this.initializeSubmitView();
+    return this;
+  },
+
+  initializeIdentifierView: function()
+  {
+    var view = new App.IdentifierView();
+    this.listenTo(view, 'didUpdateAnimalIdentifier', this.updateAnimalIdentifier);
+    this.subviews.push(view);
   },
 
   initializeLocationView: function() {
@@ -83,13 +115,67 @@ App.AppView = Backbone.View.extend({
 
   initializeImageView: function() {
     if (this.imageProvider.isAvailable()) {
-      this.subviews.push(new App.ImageView());
+      var view = new App.ImageView();
+      this.listenTo(view, 'didUpdateImage', this.updateImage);
+      this.subviews.push(view);
     }
+  },
+
+  initializeSubmitView: function() {
+    var view = new App.SubmitView();
+    this.listenTo(view, 'sendForm', this.preparePayload);
+    this.subviews.push(view);
   },
 
   addCsrfToken: function() {
      var token = $("meta[name='csrf-token']").attr('content');
      this.$el.append("<input type='hidden' name='authenticity_token' value='" + token + "'>");
+  },
+
+  updateAnimalIdentifier: function(newIdentifier) {
+    this.model.set('animalIdentifier', newIdentifier);
+  },
+
+  updateAddress: function(address) {
+    var addr = address.results[0].formatted_address;
+    this.model.set('address', addr);
+  },
+
+  updatePosition: function(geoposition) {
+    var lat = geoposition.coords.latitude;
+    var lon = geoposition.coords.longitude;
+
+    this.model.set('latitude', lat);
+    this.model.set('longitude', lon);
+  },
+
+  updateImage: function(imageEl) {
+    this.model.set('image', imageEl);
+  },
+
+  preparePayload: function() {
+    var data = new FormData();
+    data.append('animal_identifier', this.model.get('animalIdentifier'));
+    data.append('image', this.model.get('image'));
+    this.send(data);
+  },
+
+  send: function(formData) {
+    $.ajax({
+      url: 'observations/new',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(xhr)
+      {
+        console.log(xhr.data);
+      },
+      error: function(xhr)
+      {
+        console.log(xhr.data);
+      }
+    });
   }
 });
 
@@ -226,23 +312,30 @@ App.SubmitView = Backbone.View.extend({
   handleSubmit: function(event)
   {
     event.preventDefault();
+    this.trigger('sendForm');
     console.log('Click submit');
-    var form = new FormData($('form'));
-    $.ajax({
-      url: 'observations/new',
-      type: 'POST',
-      data: form,
-      processData: false,
-      contentType: false,
-      success: function(xhr)
-      {
-        console.log(xhr.data);
-      },
-      error: function(xhr)
-      {
-        console.log(xhr.data);
-      }
-    });
+    
+    //var file = document.getElementById('camera-input');
+    //var tag = document.getElementById('animal-identifier');
+//
+    //var form = new FormData();
+    //form.append('image', file.files[0]);
+    //form.append('identifier', tag);
+    //$.ajax({
+    //  url: 'observations/new',
+    //  type: 'POST',
+    //  data: form,
+    //  processData: false,
+    //  contentType: false,
+    //  success: function(xhr)
+    //  {
+    //    console.log(xhr.data);
+    //  },
+    //  error: function(xhr)
+    //  {
+    //    console.log(xhr.data);
+    //  }
+    //});
   }
 });
 

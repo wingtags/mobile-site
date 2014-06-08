@@ -6,7 +6,7 @@ describe("LocationView", function() {
   });
 
   it("Should accept a locationProvider object on instantiation", function() {
-    var locationView = new App.LocationView({ locationProvider: App.LocationProvider() });
+    var locationView = new App.LocationView({ locationProvider: new App.LocationProvider() });
 
     expect(locationView.locationProvider).toExist();
   });

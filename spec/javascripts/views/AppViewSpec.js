@@ -9,6 +9,27 @@ describe("AppView", function() {
     });
   });
 
+  describe("data", function() {
+    it("updateAnimalIdentifier", function() {
+      this.appView.updateAnimalIdentifier(22);
+      expect(this.appView.model.get('animalIdentifier')).toBe(22);
+    });
+
+    it("updateAddress", function() {
+      this.appView.updateAddress(addressStub);
+      expect(this.appView.model.get('address')).toBe("343-345 Old South Head Road, North Bondi NSW 2026, Australia");
+    });
+
+    it("updatePosition", function() {
+      this.appView.updatePosition(geopositionStub);
+      expect(this.appView.model.get('latitude')).toBe(-33.882973359510984);
+      expect(this.appView.model.get('longitude')).toBe(151.26951911449567);
+    });
+
+    it("updateImage", function() {
+    });
+  });
+
   describe("initialize()", function() {
 
     it("should instantiate an IdentifierView", function() {
@@ -50,6 +71,10 @@ describe("AppView", function() {
       });
       
       expect(spy.calledOnce).toBeTruthy();
+    });
+
+    it("should instantiate an Observation model", function() {
+      expect(this.appView.model instanceof App.Observation).toBe(true);
     });
   });
 

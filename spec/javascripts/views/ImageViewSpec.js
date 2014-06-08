@@ -32,4 +32,15 @@ describe("ImageView", function() {
       expect(spyEvent).toHaveBeenTriggered();
     });
   });
+
+  describe('When an image is selected', function() {
+    it('should fire a didUpdateImage event', function() {
+      var spy = sinon.spy();
+      this.imageView.on('didUpdateImage', spy);
+
+      var $input = this.imageView.render().$el.find('#camera-input').change();
+
+      expect(spy.called).toBe(true);
+    });
+  });
 });

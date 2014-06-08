@@ -15,4 +15,16 @@ describe("IdentifierView", function() {
       expect(obj).toBe(this.identifierView);
     });
   });
+
+  describe("On input", function() {
+    it("should fire a didUpdateAnimalIdentifier event", function() {
+      var spy = sinon.spy();
+      this.identifierView.on('didUpdateAnimalIdentifier', spy);
+
+      var $el = this.identifierView.render().$el;
+      $el.find('#animal-identifier').val(22).trigger('keyup');
+
+      expect(spy.called).toBe(true);
+    });
+  });
 });
