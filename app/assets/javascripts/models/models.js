@@ -61,6 +61,7 @@ App.LocationProvider = Backbone.Model.extend({
     var positionModel = new App.Position({ geoposition: position });
     this.set('lastLocation', positionModel);
     this.trigger('didUpdateLocation', positionModel);
+    this.trigger('didUpdateLocation2', position);
   },
   onError: function(error) { 
     this.trigger('didFailToUpdateLocation', error);
