@@ -19,7 +19,6 @@ App.AddressView = Backbone.View.extend({
 
   updateAddress: function() {
     var address = this.$el.find('#street').val() + ', ' + this.$el.find('#suburb').val();
-    console.log('address: ', address);
     this.trigger('didUpdateAddress', address);
   }
 });

@@ -4,23 +4,51 @@ describe("LocationProvider", function() {
     this.locationProvider = new App.LocationProvider();
   });
 
-  describe("When geolocation is not available", function() {
+  describe("When geolocation is not supported by the browser", function() {
     beforeEach(function() {
-      this.locationProvider.isAvailable = function() { return false; }
+      helper.fakeLocationProvider({ simulateMissingGeolocation : true});
     });
 
-    it("should raise an error on getCurrentPosition()", function() {
-      var spy = sinon.spy();
-      this.locationProvider.on('didFailToUpdateLocation', spy);
+    afterEach(function() {
+      helper.restoreLocationProvider();
+    });
 
-      this.locationProvider.getCurrentPosition();
+    //it("should raise an error on getCurrentPosition()", function() {
+    //  var spy = sinon.spy();
+    //  this.locationProvider.on('didFailToUpdateLocation', spy);
+//
+    //  this.locationProvider.getCurrentPosition();
+//
+    //  expect(spy.calledOnce).toBeTruthy();
+    //});
 
-      expect(spy.calledOnce).toBeTruthy();
+    it("getCurrentPosition should return a failed promise", function() {
+      var locationProvider = new App.LocationProvider();
+      var promise = locationProvider.getCurrentPosition();
+      var out = false;
+      promise.fail(function() { out = true });
+      expect(out).toBe(true);
     });
   });
 
-  describe("startUpdatingLocation", function() {
+  describe("When geolocation is supported by the browser", function() {
+    beforeEach(function() {
+      helper.fakeLocationProvider({ simulateMissingGeolocation : false });
+    });
 
+    afterEach(function() {
+      helper.restoreLocationProvider();
+    });
+
+    it("should return a promise", function() {
+      var locationProvider = new App.LocationProvider();
+      var promise = locationProvider.getCurrentPosition();
+      var position;
+
+      promise.done(function(arg) { position = arg; });
+
+      expect(_.isEqual(position, geopositionStub)).toBeTruthy();
+    });
   });
 
   describe("getCurrentPosition", function() {

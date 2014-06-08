@@ -18,7 +18,7 @@ App.LocationView = Backbone.View.extend({
       geocoder: new App.Geocoder
     });
 
-    this.addressView = new App.AddressView();
+    
   },
 
   render: function() {
@@ -35,6 +35,8 @@ App.LocationView = Backbone.View.extend({
   },
 
   renderAddressView: function() {
+    this.addressView = new App.AddressView();
+    this.listenTo(this.addressView, 'didUpdateAddress', this.updateAddress);
     this.$el.append(this.addressView.render().el);
   },
 
@@ -43,5 +45,14 @@ App.LocationView = Backbone.View.extend({
     console.log("this: ", this);
     this.coordinateView.remove();
     this.renderAddressView();
+  },
+
+  updateAddress: function(address) {
+    var location = {
+      'address' : address,
+      'latitude' : '',
+      'longitude' : ''
+    }
+    this.trigger('didUpdateLocation', location);
   }
 });

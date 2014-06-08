@@ -20,13 +20,16 @@ App.Position = Backbone.Model.extend({
 App.LocationProvider = Backbone.Model.extend({
   initialize: function() {
     _.bindAll(this, 'isAvailable', 'startUpdatingLocation', 'getCurrentPosition', 'onSuccess', 'onError');
+
     if (this.isAvailable()) { 
       this._base = window.navigator.geolocation;
     }
   }, 
+
   isAvailable:  function() {
     return 'geolocation' in window.navigator;
   },
+
   startUpdatingLocation: function() {
     if (this.isAvailable()) {
       var options = {
@@ -38,6 +41,7 @@ App.LocationProvider = Backbone.Model.extend({
       this.set('watchID', watchID);
     }
   },
+  
   getCurrentPosition: function() {
     if (this.isAvailable()) {
       var deferred = new $.Deferred();
@@ -52,8 +56,10 @@ App.LocationProvider = Backbone.Model.extend({
       this._base.getCurrentPosition(this.onSuccess, this.onError, options);
       this._base.getCurrentPosition(onSuccess, onError, options);
       return deferred.promise();
-    } else
-    {
+    } else {
+      var deferred = new $.Deferred();
+      deferred.reject("Geolocation is not supported.");
+      return deferred.promise();
       this.onError();
     }
   },

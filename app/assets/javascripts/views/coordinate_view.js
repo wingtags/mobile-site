@@ -11,10 +11,11 @@ App.CoordinateView = Backbone.View.extend({
      options.hasOwnProperty('locationProvider') ? this.locationProvider = options.locationProvider : console.log('CoordinateView.locationProvider missing!');
      options.hasOwnProperty('geocoder') ? this.geocoder = options.geocoder : console.log('CoordinateView.geocoder missing!');
     }
+    this.positionPromise = this.locationProvider.getCurrentPosition();
   },
 
   render: function() {
-    this.locationProvider.getCurrentPosition().then(
+    this.positionPromise.then(
       this.renderPosition,
       this.trigger('onLocationError'),
       this.$el.html(JST['location/pending']())

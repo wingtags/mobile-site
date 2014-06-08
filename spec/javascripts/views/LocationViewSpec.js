@@ -1,9 +1,6 @@
 describe("LocationView", function() {
 
-  beforeEach(function() {
-    this.locationView = new App.LocationView({ locationProvider: new App.LocationProvider() });
-    //this.locationView.locationProvider = new LocationProvider();
-  });
+  
 
   it("Should accept a locationProvider object on instantiation", function() {
     var locationView = new App.LocationView({ locationProvider: new App.LocationProvider() });
@@ -11,7 +8,60 @@ describe("LocationView", function() {
     expect(locationView.locationProvider).toExist();
   });
 
+  describe("When an AddressView is rendered", function() {
+
+    beforeEach(function() {
+      this.orig = App.LocationProvider.prototype.isAvailable;
+      App.LocationProvider.prototype.isAvailable = function() { return false; };
+
+      var locationProviderStub = new App.LocationProvider();
+      this.locationView = new App.LocationView({locationProvider: locationProviderStub});
+    });
+
+    afterEach(function() {
+      App.LocationProvider.prototype.isAvailable = this.orig;
+    });
+
+    it("should trigger a didUpdateLocation event when a didUpdateAddress event is received from the AddressView", function() {
+      var spy = sinon.spy();
+      this.locationView.on('didUpdateLocation', spy);
+
+      this.locationView.render();
+      this.locationView.addressView.trigger('didUpdateAddress', 'addressString');
+
+      var location = spy.args[0][0];
+      expect(location.address).toBe('addressString');
+    });
+  });
+
+  //describe("When a CoordinateView is rendered", function() {
+  //  this.isAvail = App.LocationProvider.prototype.isAvailable;
+  //  this.pos = App.LocationProvider.prototype.getCurrentPosition;
+//
+  //  beforeEach(function() {
+  //    App.LocationProvider.prototype.isAvailable = function() { return false; };
+  //    App.LocationProvider.prototype.getCurrentPosition = function() { return new $.Deferred().resolve(geopositionStub).promise(); };
+  //    this.locationProviderStub = new App.LocationProvider();
+  //  });
+//
+  //  afterEach(function() {
+  //    App.LocationProvider.prototype.isAvailable = this.isAvail;
+  //    App.LocationProvider.prototype.getCurrentPosition = this.pos;
+  //  });
+//
+  //  it("should trigger a didUpdateLocation event when a didUpdatePosition event is received from the CoordinateView", function() {
+  //    var view = new App.CoordinateView({ locationProvider: locationProviderStub });
+//
+  //  });
+  //});
+
+
+
   describe("on GPS error", function() {
+    beforeEach(function() {
+      this.locationView = new App.LocationView({ locationProvider: new App.LocationProvider() });
+    });
+
     it("renders an addressView", function() {
       var locationProvider = new App.LocationProvider();
       var locationView = new App.LocationView({ locationProvider: locationProvider });
@@ -23,10 +73,14 @@ describe("LocationView", function() {
     });
   });
 
-  describe("When GPS is not available:", function() {
-
+  describe("When geolocation is not supported by the browser", function() {
     beforeEach(function() {
-      this.locationView.locationProvider.isAvailable = function() { return false; };
+      helper.fakeLocationProvider({ simulateMissingGeolocation : true});
+      this.locationView = new App.LocationView({ locationProvider: new App.LocationProvider() });
+    });
+
+    afterEach(function() {
+      helper.restoreLocationProvider();
     });
 
     it("Instantiates an AddressView", function() {
@@ -40,10 +94,15 @@ describe("LocationView", function() {
     });
   });
 
-  describe("When GPS is available", function() {
+  describe("When geolocation is supported by the browser", function() {
 
     beforeEach(function() {
-      this.locationView.locationProvider.isAvailable = function() { return true; }
+      helper.fakeLocationProvider({ simulateMissingGeolocation : false});
+      this.locationView = new App.LocationView({ locationProvider: new App.LocationProvider() });
+    });
+
+    afterEach(function() {
+      helper.restoreLocationProvider();
     });
 
     it("Instantiates a CoordinateView", function() {
