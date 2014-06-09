@@ -10,6 +10,7 @@ App.LocationView = Backbone.View.extend({
       'onLocationError');
     if (options !== undefined) {
       this.locationProvider = options.locationProvider;
+      this.geocodingProvider = options.geocodingProvider;
       this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
     }
     

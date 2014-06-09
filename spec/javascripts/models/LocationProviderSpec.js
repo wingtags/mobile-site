@@ -40,14 +40,18 @@ describe("LocationProvider", function() {
       helper.restoreLocationProvider();
     });
 
-    it("should return a promise", function() {
-      var locationProvider = new App.LocationProvider();
+    it("getCurrentPosition should return a promise", function(done) {
+      var locationProvider = helper.fakeLocationProvider2();
       var promise = locationProvider.getCurrentPosition();
-      var position;
 
-      promise.done(function(arg) { position = arg; });
-
-      expect(_.isEqual(position, geopositionStub)).toBeTruthy();
+      promise.then(
+        function(position) {
+          expect(position).toEqual(geopositionStub);
+        },
+        function(error) {
+          expect(error).not.toBeDefined();
+        }
+      ).always(done);
     });
   });
 

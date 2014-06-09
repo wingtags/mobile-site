@@ -87,19 +87,89 @@ App.ImageProvider = Backbone.Model.extend({
   
   
 App.Geocoder = Backbone.Model.extend({
-  reverseGeocode: function(position) {
-    var xhr = $.ajax(
-      "https://maps.googleapis.com/maps/api/geocode/json",
-      {
+
+  initialize: function() {
+    _.bindAll(this,
+      'reverseGeocode',
+      'fetchAddress',
+      'buildLocationFromAddress'
+    )
+  },
+
+  reverseGeocode: function(latlng) {
+    var deferred = new $.Deferred();
+    
+    var xhr = this.fetchAddress(latlng);
+    xhr.then(
+      function(data) {
+        var location = {
+          address: data.results[0].formatted_address,
+          latitude: latlng.latitude,
+          longitude: latlng.longitude
+        };
+        deferred.resolve(location);
+      },
+      function(xhr, status, error) {
+        deferred.fail(error);
+      }
+    );
+
+    return deferred.promise();
+  },
+  //  if (latlng.latitude != undefined && latlng.longitude != undefined)
+  //    {
+  //      var xhr = $.ajax(
+  //      "https://maps.googleapis.com/maps/api/geocode/json",
+  //      {
+  //        data: { 
+  //          latlng: latlng.latitude + ',' + latlng.longitude, 
+  //          sensor: true
+  //        },
+  //        dataType: "json"
+  //      }
+  //    );
+  //      return xhr;
+  //    } else {
+//
+  //    var xhr = $.ajax(
+  //      "https://maps.googleapis.com/maps/api/geocode/json",
+  //      {
+  //        data: { 
+  //          latlng: latlng.get('latitude') + ',' + latlng.get('longitude'), 
+  //          sensor: true
+  //        },
+  //        dataType: "json"
+  //      }
+  //    );
+  //    return xhr;
+  //  }
+  //},
+
+  fetchAddress: function(coords) {
+    var xhr = $.ajax("https://maps.googleapis.com/maps/api/geocode/json",
+      { 
         data: { 
-          latlng: position.get('latitude') + ',' + position.get('longitude'), 
+          latlng: coords.latitude + ',' + coords.longitude, 
           sensor: true
         },
         dataType: "json"
       }
     );
+
     return xhr;
   },
+
+  buildLocationFromAddress: function(data, latlng) {
+    console.log('buildLocationFromAddress', data, latlng);
+    var location = {
+      //address: data.results[0].formatted_address,
+      //latitude: latlng.latitude,
+      //longitude: latlng.longitude
+    };
+
+    return location;
+  },
+    
 
   getSuburbStateString: function(data) {
     return this.getSuburbName(data) + ', ' + this.getStateAbbrev(data);
