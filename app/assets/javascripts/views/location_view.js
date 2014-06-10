@@ -16,6 +16,7 @@ App.LocationView = Backbone.View.extend({
     
     this.coordinateView = new App.CoordinateView({
       locationProvider: this.locationProvider,
+      geocodingProvider: this.geocodingProvider,
       geocoder: new App.Geocoder
     });
 
@@ -32,6 +33,7 @@ App.LocationView = Backbone.View.extend({
   },
 
   renderCoordinateView: function() {
+    this.listenTo(this.coordinateView.listenTo, 'didUpdateCoordinates', this.updateLocation);
     this.$el.append(this.coordinateView.render().el);
   },
 
@@ -55,5 +57,14 @@ App.LocationView = Backbone.View.extend({
       'longitude' : ''
     }
     this.trigger('didUpdateLocation', location);
+  },
+
+  updateLocation: function(location) {
+    var loc = {
+      address: location.addresss,
+      latitude: location.latitude,
+      longitude: location.longitude
+    }
+    this.trigger('didUpdateLocation', loc);
   }
 });

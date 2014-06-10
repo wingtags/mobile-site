@@ -22,6 +22,7 @@ App.AppView = Backbone.View.extend({
 
     if (options !== undefined) {
       this.geocoder = options.geocoder;
+      this.geocodingProvider = options.geocodingProvider;
       this.locationProvider = options.locationProvider;
       this.imageProvider = options.imageProvider;
     };
@@ -47,7 +48,10 @@ App.AppView = Backbone.View.extend({
   },
 
   initializeLocationView: function() {
-    var view = new App.LocationView({ locationProvider: this.locationProvider });
+    var view = new App.LocationView({ 
+      locationProvider: this.locationProvider,
+      geocodingProvider: this.geocodingProvider 
+    });
     this.listenTo(view, 'didUpdateLocation2', this.updateLocation);
     this.subviews.push(view);
   },

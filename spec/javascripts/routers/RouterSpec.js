@@ -1,7 +1,14 @@
 describe("RouterSpec", function() {
 
   beforeEach(function() {
+    helper.fakeLocationProvider();
+    helper.stubGeocoder();
     this.router = new App.Router();
+  });
+
+  afterEach(function() {
+    helper.restoreLocationProvider();
+    helper.restoreGeocoder();
   });
 
   it("should create an AppView", function() {
@@ -13,7 +20,8 @@ describe("RouterSpec", function() {
 
     expect(appView.locationProvider).toExist();
     expect(appView.imageProvider).toExist();
-    expect(appView.geocoder).toExist();
+    expect(appView.geocoder).toExist(); // REMOVE ME
+    expect(appView.geocodingProvider).toExist();
   });
 
   it("should set the locationProvider to start updating the location", function() {

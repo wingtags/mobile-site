@@ -12,16 +12,15 @@ App.CoordinateView = Backbone.View.extend({
       'validateOptions');
 
     this.validateOptions(options);
-    //if (options === undefined) { throw new Error("ArgumentError: 'options' undefined.") };
-    if (options !== undefined) {
-     options.hasOwnProperty('locationProvider') ? this.locationProvider = options.locationProvider : console.log('CoordinateView.locationProvider missing!');
-     options.hasOwnProperty('geocoder') ? this.geocoder = options.geocoder : console.log('CoordinateView.geocoder missing!');
-     if (options.hasOwnProperty('geocodingProvider')) { this.geocodingProvider = options.geocodingProvider; }
-    }
+    this.locationProvider = options.locationProvider;
+    this.geocodingProvider = options.geocodingProvider;
+    this.geocoder = options.geocoder;
+
     this.positionPromise = this.locationProvider.getCurrentPosition();
   },
 
   validateOptions: function(options) {
+    console.log('validation options: ', options);
     if (typeof options === "undefined") { throw new Error("Options must be supplied"); };
     if (typeof options.locationProvider === "undefined") { throw new Error("A LocationProvider must be supplied"); };
     if (typeof options.geocodingProvider === "undefined") { throw new Error("A geocodingProvider must be supplied"); };
@@ -37,11 +36,13 @@ App.CoordinateView = Backbone.View.extend({
   },
 
   renderPosition: function(position) {
-   console.log("renderPosition position = ", position);
-   console.log("coordinateView.geocoder: ", this.geocoder);//, this.geocoder);
-   this.geocodingProvider.reverseGeocode(position).then(
-     this.onSuccess
-     );
+    //console.log("renderPosition position = ", position);
+    //console.log("coordinateView.geocoder: ", this.geocoder);//, this.geocoder);
+    console.log('renderPosition context: ', this);
+    console.log('renderPosition geocodingProvider: ', this.geocodingProvider);
+    this.geocodingProvider.reverseGeocode(position).then(
+      this.onSuccess
+      );
     return this;
   },
 

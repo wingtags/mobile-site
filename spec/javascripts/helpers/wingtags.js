@@ -23,16 +23,36 @@ helper.restoreLocationProvider = function() {
   App.LocationProvider.prototype.getCurrentPosition = helper._originalGetCurrentPositionFn;
 };
 
+helper.stubGeocoder = function() {
+  helper.originalReverseGeocodeFn = App.Geocoder.prototype.reverseGeocode;
+  App.Geocoder.prototype.reverseGeocode = function() { 
+    var deferred = new $.Deferred();
+    deferred.resolve(addressStub);
+    return deferred.promise();
+  }
+}
+
+helper.restoreGeocoder = function() {
+  App.Geocoder.prototype.reverseGeocode = helper.originalReverseGeocodeFn;
+},
+
 helper.fakeGeocoder = function(options) {
+  var _originalReverseGeocodeFn = App.Geocoder.prototype.reverseGeocode;
+  var geocoder;
 
   if (options == undefined)
   {
-    var geocoder = new App.Geocoder();
-    geocoder.reverseGeocode = function() { 
-      return new $.Deferred().resolve(addressStub).promise();
+    App.Geocoder.prototype.reverseGeocode = function() { 
+      var deferred = new $.Deferred();
+      deferred.resolve(addressStub);
+      return deferred.promise();
     }
-    return geocoder;
   }
+
+  geocoder = new App.Geocoder();
+
+  App.Geocoder.prototype.reverseGeocode = _originalReverseGeocodeFn;
+  return geocoder;
 }
 
 helper.fakeLocationProvider2 = function(options) {

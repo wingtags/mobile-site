@@ -20,7 +20,7 @@ describe("CoordinateView", function() {
       expect(constructorFn).toThrow();
     });
 
-    it("should raise an exception if a GeocodingProvider is not supplied", function() {
+    xit("should raise an exception if a GeocodingProvider is not supplied", function() {
       var opts = { locationProvider: this.locationProvider };
       var constructorFn = function() { new App.CoordinateView(opts); };
 

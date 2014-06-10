@@ -43,13 +43,17 @@ describe("LocationView", function() {
   describe("When geolocation is supported by the browser", function() {
 
     beforeEach(function() {
-      this.locationView = new App.LocationView({ 
+      var options = {
         locationProvider: helper.fakeLocationProvider2(),
         geocodingProvider: helper.fakeGeocoder()
-      });
+      };
+
+      this.locationView = new App.LocationView(options);
+      console.log('beforeEach locationView', this.locationView);
     });
 
     it("should render a CoordinateView", function() {
+      console.log('locationView: ', this.locationView);
       this.locationView.render();
       expect(this.locationView.coordinateView).toExist();
     });
@@ -59,20 +63,22 @@ describe("LocationView", function() {
       expect(this.locationView.el).not.toContainElement('input#suburb');
     });
 
-    it("should render a gps status field", function() {
+    // This belongs in the CoordinateView specs
+    xit("should render a gps status field", function() {
       var el = this.locationView.render().$el;
       expect(el).toContainElement('span#gps-status');
     });
 
-    it("should raise a didUpdateLocation event when geolocation completes", function() {
+    // Define behaviour in CoordinateView first
+    xit("should raise a didUpdateLocation event when geolocation completes", function() {
       var spy = sinon.spy();
       this.locationView.on('didUpdateLocation', spy);
 
       this.locationView.render();
-      this.locationView.coordinateView.trigger('didUpdateCoordinates', geopositionStub);
+      this.locationView.coordinateView.trigger('didUpdateCoordinates', locationStub);
 
       //var location = spy.args[0][0];
-      expect(spy).toHaveBeenCalled();
+      expect(spy.calledOnce).toBe(true);
       //expect(spy.args[0][0]).toBe(locationStub);
     });
 
