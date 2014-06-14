@@ -5,8 +5,8 @@ describe("AppView", function() {
     this.appView = new App.AppView({
       locationProvider: new App.LocationProvider(),
       imageProvider:    new App.ImageProvider(),
-      geocoder:         new App.Geocoder(),
-      geocodingProvider: new App.Geocoder()
+      //geocoder:         new App.Geocoder(),
+      geocodingProvider: new App.GeocodingProvider()
 
     });
   });

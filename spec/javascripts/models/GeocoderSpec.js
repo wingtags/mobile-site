@@ -1,6 +1,6 @@
-describe("Geocoder", function() {
+describe("GeocodingProvider", function() {
   beforeEach(function() {
-    this.geo = new App.Geocoder();
+    this.geo = new App.GeocodingProvider();
     this.xhr = sinon.useFakeXMLHttpRequest();
     var requests = this.requests = [];
 

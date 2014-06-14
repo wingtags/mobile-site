@@ -86,7 +86,7 @@ App.ImageProvider = Backbone.Model.extend({
 });
   
   
-App.Geocoder = Backbone.Model.extend({
+App.GeocodingProvider = Backbone.Model.extend({
 
   initialize: function() {
     _.bindAll(this,

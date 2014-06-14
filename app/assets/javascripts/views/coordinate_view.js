@@ -16,7 +16,6 @@ App.CoordinateView = Backbone.View.extend({
     this.validateOptions(options);
     this.locationProvider = options.locationProvider;
     this.geocodingProvider = options.geocodingProvider;
-    this.geocoder = options.geocoder;
     this.loc = {};
     this.positionPromise = this.locationProvider.getCurrentPosition();
   },

@@ -21,7 +21,6 @@ App.AppView = Backbone.View.extend({
     );
 
     if (options !== undefined) {
-      this.geocoder = options.geocoder;
       this.geocodingProvider = options.geocodingProvider;
       this.locationProvider = options.locationProvider;
       this.imageProvider = options.imageProvider;

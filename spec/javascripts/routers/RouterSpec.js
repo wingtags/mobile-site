@@ -20,7 +20,6 @@ describe("RouterSpec", function() {
 
     expect(appView.locationProvider).toExist();
     expect(appView.imageProvider).toExist();
-    expect(appView.geocoder).toExist(); // REMOVE ME
     expect(appView.geocodingProvider).toExist();
   });
 

@@ -1,12 +1,5 @@
 describe("CoordinateView", function() {
 
-  //beforeEach(function() {
-  //  this.coordinateView = new App.CoordinateView({
-  //    locationProvider: new App.LocationProvider(),
-  //    geocoder: new App.Geocoder()
-  //  });
-  //});
-
   describe("Initialization", function() {
     beforeEach(function() {
       this.locationProvider = new helper.fakeLocationProvider2();
@@ -48,9 +41,6 @@ describe("CoordinateView", function() {
       this.coordView.render();
       expect(spy.calledWith(locationStub)).toBe(true);
     });
-
-
-
   });
 
   describe("When geolocation succeeds and geocoding fails", function() {

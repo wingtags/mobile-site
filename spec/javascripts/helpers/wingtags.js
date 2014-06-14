@@ -24,8 +24,8 @@ helper.restoreLocationProvider = function() {
 };
 
 helper.stubGeocoder = function() {
-  helper.originalReverseGeocodeFn = App.Geocoder.prototype.reverseGeocode;
-  App.Geocoder.prototype.reverseGeocode = function() { 
+  helper.originalReverseGeocodeFn = App.GeocodingProvider.prototype.reverseGeocode;
+  App.GeocodingProvider.prototype.reverseGeocode = function() { 
     var deferred = new $.Deferred();
     deferred.resolve(addressStub);
     return deferred.promise();
@@ -33,25 +33,25 @@ helper.stubGeocoder = function() {
 }
 
 helper.restoreGeocoder = function() {
-  App.Geocoder.prototype.reverseGeocode = helper.originalReverseGeocodeFn;
+  App.GeocodingProvider.prototype.reverseGeocode = helper.originalReverseGeocodeFn;
 },
 
 helper.fakeGeocoder = function(options) {
-  var _originalReverseGeocodeFn = App.Geocoder.prototype.reverseGeocode;
+  var _originalReverseGeocodeFn = App.GeocodingProvider.prototype.reverseGeocode;
   var geocoder;
 
   if (options == undefined)
   {
-    App.Geocoder.prototype.reverseGeocode = function() { 
+    App.GeocodingProvider.prototype.reverseGeocode = function() { 
       var deferred = new $.Deferred();
       deferred.resolve(addressStub);
       return deferred.promise();
     }
   }
 
-  geocoder = new App.Geocoder();
+  geocoder = new App.GeocodingProvider();
 
-  App.Geocoder.prototype.reverseGeocode = _originalReverseGeocodeFn;
+  App.GeocodingProvider.prototype.reverseGeocode = _originalReverseGeocodeFn;
   return geocoder;
 }
 

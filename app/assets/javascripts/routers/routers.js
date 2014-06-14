@@ -8,8 +8,7 @@ App.Router = Backbone.Router.extend({
     this.appView = new App.AppView({
       locationProvider: new App.LocationProvider(),
       imageProvider:    new App.ImageProvider(),
-      geocoder:         new App.Geocoder(),
-      geocodingProvider: new App.Geocoder()
+      geocodingProvider: new App.GeocodingProvider()
     });
     
     this.appView.locationProvider.getCurrentPosition();
