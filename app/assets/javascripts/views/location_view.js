@@ -7,7 +7,9 @@ App.LocationView = Backbone.View.extend({
       'render',
       'renderCoordinateView',
       'renderAddressView',
-      'onLocationError');
+      'onLocationError'
+    );
+    
     if (options !== undefined) {
       this.locationProvider = options.locationProvider;
       this.geocodingProvider = options.geocodingProvider;
@@ -33,7 +35,7 @@ App.LocationView = Backbone.View.extend({
   },
 
   renderCoordinateView: function() {
-    this.listenTo(this.coordinateView.listenTo, 'didUpdateCoordinates', this.updateLocation);
+    this.listenTo(this.coordinateView, 'didUpdateCoordinates', this.updateLocation);
     this.$el.append(this.coordinateView.render().el);
   },
 

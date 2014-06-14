@@ -202,7 +202,7 @@ App.Geocoder = Backbone.Model.extend({
   getAddressForPosition: function(data) {
     var address = new App.Address();
 
-    address.set('suburb', this.getValueForAttribute(data, 'long_name', 'locality'));
+    address.set('suburb', this.getValueForAttribute( ));
     address.set('stateAbbrev', this.getValueForAttribute(data, 'short_name', 'administrative_area_level_1'));
 
     return address;

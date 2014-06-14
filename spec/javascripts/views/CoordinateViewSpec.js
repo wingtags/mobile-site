@@ -29,13 +29,27 @@ describe("CoordinateView", function() {
   });
 
   describe("When geolocation and geocoding succeeds", function() {
-    it("should fire a didUpdatePosition event", function() {
-
+    beforeEach(function() {
+      var opts = {
+        locationProvider: new helper.fakeLocationProvider2(),
+        geocodingProvider: new helper.fakeGeocoder()
+      }
+      this.coordView = new App.CoordinateView(opts);
     });
 
-    it("should render the street and suburb", function() {
-
+    it("should render the street and suburb", function(done) {
+      var $el = this.coordView.render().$el;
+      expect($el.find("#geocoded-address").text()).toBe("Old South Head Road, North Bondi");
+      done();
     });
+
+    it("should fire a didUpdateLocation event", function() {
+      var spy = sinon.spy(this.coordView, "notify");
+      this.coordView.render();
+      expect(spy.calledWith(locationStub)).toBe(true);
+    });
+
+
 
   });
 

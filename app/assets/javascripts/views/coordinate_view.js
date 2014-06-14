@@ -9,13 +9,15 @@ App.CoordinateView = Backbone.View.extend({
       'render', 
       'renderPosition', 
       'onSuccess',
-      'validateOptions');
+      'validateOptions',
+      'getValueForAttribute',
+      'getAddressForPosition');
 
     this.validateOptions(options);
     this.locationProvider = options.locationProvider;
     this.geocodingProvider = options.geocodingProvider;
     this.geocoder = options.geocoder;
-
+    this.loc = {};
     this.positionPromise = this.locationProvider.getCurrentPosition();
   },
 
@@ -28,18 +30,26 @@ App.CoordinateView = Backbone.View.extend({
 
   render: function() {
     this.positionPromise.then(
-      this.renderPosition,
+      this.getAddressForPosition,
       this.trigger('onLocationError'),
       this.$el.html(JST['location/pending']())
     );
     return this;
   },
 
+  getAddressForPosition: function(position) {
+    this.loc.latitude = position.coords.latitude;
+    this.loc.longitude = position.coords.longitude;
+
+    this.geocodingProvider.reverseGeocode(position)
+      .then(
+        this.onSuccess
+      );
+    return this;
+  },
+
+  // OBSOLETE - REMOVE
   renderPosition: function(position) {
-    //console.log("renderPosition position = ", position);
-    //console.log("coordinateView.geocoder: ", this.geocoder);//, this.geocoder);
-    console.log('renderPosition context: ', this);
-    console.log('renderPosition geocodingProvider: ', this.geocodingProvider);
     this.geocodingProvider.reverseGeocode(position).then(
       this.onSuccess
       );
@@ -47,13 +57,27 @@ App.CoordinateView = Backbone.View.extend({
   },
 
   onSuccess: function(data) {
-    // create position object
-    // fire didUpdatePosition
-    // render UI
-   console.log("coordinateView.onSuccess data: ", data);
-   console.log("coordinateView.geocoder: ", this.geocoder);
-   var address = this.geocoder.getAddressForPosition(data);
-   var addressString = { addressString: address.get('suburb') + ', ' + address.get('stateAbbrev') };
-   $(this.el).html(JST['location/geocoded-address'](addressString));
+    this.loc.address = data.results[0].formatted_address;
+    var suburb = this.getValueForAttribute(data, 'long_name', 'locality');
+    var street = this.getValueForAttribute(data, 'long_name', 'route');
+    this.$el.html(JST['location/geocoded-address']({ addressString: street + ', ' + suburb }));
+    this.notify(this.loc);
+  },
+
+  notify: function(location) {
+    this.trigger('didUpdateLocation', location);
+  },
+
+  getValueForAttribute: function(data, valueKey, addressType) {
+    var address = data.results[0];
+    var x = _.find(address.address_components, function(component) {
+      return _.contains(component.types, addressType);
+    });
+
+    if (x === undefined) {
+      return '';
+    } else {
+      return x[valueKey] !== undefined ? x[valueKey] : ''
+    }
   }
 });
