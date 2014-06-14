@@ -16,11 +16,10 @@ describe("LocationView", function() {
   describe("When an AddressView is rendered", function() {
 
     beforeEach(function() {
-      this.orig = App.LocationProvider.prototype.isAvailable;
-      App.LocationProvider.prototype.isAvailable = function() { return false; };
-
-      var locationProviderStub = new App.LocationProvider();
-      this.locationView = new App.LocationView({locationProvider: locationProviderStub});
+      this.locationView = new App.LocationView({
+        locationProvider: helper.fakeLocationProvider2(),
+        geocodingProvider: helper.fakeGeocoder()
+      });
     });
 
     afterEach(function() {
