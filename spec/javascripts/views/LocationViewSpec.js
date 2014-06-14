@@ -17,13 +17,9 @@ describe("LocationView", function() {
 
     beforeEach(function() {
       this.locationView = new App.LocationView({
-        locationProvider: helper.fakeLocationProvider2(),
+        locationProvider: helper.fakeLocationProvider2({simulateMissingGeolocation: true}),
         geocodingProvider: helper.fakeGeocoder()
       });
-    });
-
-    afterEach(function() {
-      App.LocationProvider.prototype.isAvailable = this.orig;
     });
 
     it("should trigger a didUpdateLocation event when a didUpdateAddress event is received from the AddressView", function() {
