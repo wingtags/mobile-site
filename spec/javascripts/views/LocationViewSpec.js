@@ -44,11 +44,9 @@ describe("LocationView", function() {
       };
 
       this.locationView = new App.LocationView(options);
-      console.log('beforeEach locationView', this.locationView);
     });
 
     it("should render a CoordinateView", function() {
-      console.log('locationView: ', this.locationView);
       this.locationView.render();
       expect(this.locationView.coordinateView).toExist();
     });

@@ -15,12 +15,10 @@ App.ImageView = Backbone.View.extend({
    },
    getImage: function(event) {
      event.preventDefault();
-     console.log('imageView el: ', this.$el.find('#camera-input'));
      this.$el.find('#camera-input').click();
    },
    fireDidUpdateImage: function() {
     var file = this.$el.find('#camera-input').get(0).files[0];
     this.trigger('didUpdateImage', file);
-    console.log('didUpdateImage', file);
    }
  });

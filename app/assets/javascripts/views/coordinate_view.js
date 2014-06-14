@@ -22,7 +22,6 @@ App.CoordinateView = Backbone.View.extend({
   },
 
   validateOptions: function(options) {
-    console.log('validation options: ', options);
     if (typeof options === "undefined") { throw new Error("Options must be supplied"); };
     if (typeof options.locationProvider === "undefined") { throw new Error("A LocationProvider must be supplied"); };
     if (typeof options.geocodingProvider === "undefined") { throw new Error("A geocodingProvider must be supplied"); };
