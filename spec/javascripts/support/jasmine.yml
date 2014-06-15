@@ -14,6 +14,7 @@ src_files:
   - assets/application.js
   - assets/sinon.js
   - assets/jasmine-jquery.js
+  - assets/jasmine-sinon.js
 
 # stylesheets
 #

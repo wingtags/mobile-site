@@ -61,6 +61,19 @@ helper.fakeGeocoder = function(options) {
   return geocoder;
 };
 
+helper.fakeGeocoder2 = function(options) {
+  var _originalReverseGeocodeFn = App.GeocodingProvider.prototype.reverseGeocode;
+  var deferred = new $.Deferred();
+
+  App.GeocodingProvider.prototype.reverseGeocode = function() { return deferred.promise(); };
+
+  var geocoder = new App.GeocodingProvider();
+  geocoder.deferred = deferred;
+
+  App.GeocodingProvider.prototype.reverseGeocode = _originalReverseGeocodeFn;
+  return geocoder;
+};
+
 helper.fakeLocationProvider2 = function(options) {
   helper._originalIsAvailableFn = App.LocationProvider.prototype.isAvailable;
   helper._originalGetCurrentPositionFn = App.LocationProvider.prototype.getCurrentPosition;

@@ -7,21 +7,25 @@ App.LocationView = Backbone.View.extend({
       'render',
       'renderCoordinateView',
       'renderAddressView',
-      'onLocationError'
+      'onLocationError',
+      '_validateOptions'
     );
-    
-    if (options !== undefined) {
-      this.locationProvider = options.locationProvider;
-      this.geocodingProvider = options.geocodingProvider;
-      this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
-    }
-    
+
+    this._validateOptions(options);
+    this.locationProvider = options.locationProvider;
+    this.geocodingProvider = options.geocodingProvider;
+    this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
+        
     this.coordinateView = new App.CoordinateView({
       locationProvider: this.locationProvider,
       geocodingProvider: this.geocodingProvider
     });
+  },
 
-    
+  _validateOptions: function(options) {
+    if (typeof options === "undefined") { throw new TypeError("Options must be supplied"); };
+    if (typeof options.locationProvider === "undefined") { throw new TypeError("A LocationProvider must be supplied"); };
+    if (typeof options.geocodingProvider === "undefined") { throw new TypeError("A GeocodingProvider must be supplied"); };
   },
 
   render: function() {

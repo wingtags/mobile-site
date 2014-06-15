@@ -1,13 +1,20 @@
 describe("LocationView", function() {
 
-  it("Should require a LocationProvider and GeocodingProvider on instantiation", function() {
-    var locationView = new App.LocationView({
-      locationProvider: helper.fakeLocationProvider2(),
-      geocodingProvider: helper.fakeGeocoder()
-    });
+  beforeEach(function() {
+    this.locationProvider = new helper.fakeLocationProvider3();
+    this.geocodingProvider = new helper.fakeGeocoder2();
+  });
 
-    expect(locationView.locationProvider).toExist();
-    expect(locationView.geocodingProvider).toExist();
+  it("should raise an exception if a LocationProvider is not supplied", function() {
+    var options = { geocodingProvider: this.geocodingProvider };
+    var constructorFn = function() { new App.LocationView(options); };
+    expect(constructorFn).toThrow(new TypeError("A LocationProvider must be supplied"));
+  });
+
+  it("should raise an exception if a GeocodingProvider is not supplied", function() {
+    var options = { locationProvider: this.locationProvider };
+    var constructorFn = function() { new App.LocationView(options); };
+    expect(constructorFn).toThrow(new TypeError("A GeocodingProvider must be supplied"));
   });
 
 
@@ -97,6 +104,32 @@ describe("LocationView", function() {
 
       var location = spy.args[0][0];
       expect(location.address).toBe('addressString');
+    });
+  });
+
+  
+  describe("When a CoordinateView is rendered", function() {
+
+    beforeEach(function(){ 
+      this.locationProvider = helper.fakeLocationProvider3();
+      this.geocodingProvider = helper.fakeGeocoder2();
+  
+      this.locationView = new App.LocationView({
+        locationProvider: this.locationProvider,
+        geocodingProvider: this.geocodingProvider
+      });
+
+      this.locationProvider.deferred.resolve(geopositionStub);
+    });
+
+    describe("and Geolocation fails", function() {
+      it("The LocationView should remove the CoordinateView and render an AddressView", function() {
+        this.geocodingProvider.deferred.reject();
+        var $el = this.locationView.render().$el;
+
+        expect($el).not.toContainElement('#gps-status');
+
+      });
     });
   });
 

@@ -11,7 +11,8 @@ App.CoordinateView = Backbone.View.extend({
       'onSuccess',
       'validateOptions',
       'getValueForAttribute',
-      'getAddressForPosition');
+      'getAddressForPosition',
+      'handleGeocodingFailure');
 
     this.validateOptions(options);
     this.locationProvider = options.locationProvider;
@@ -41,9 +42,9 @@ App.CoordinateView = Backbone.View.extend({
 
     this.geocodingProvider.reverseGeocode(position)
       .then(
-        this.onSuccess
+        this.onSuccess,
+        this.handleGeocodingFailure
       );
-    return this;
   },
 
   // OBSOLETE - REMOVE
@@ -64,6 +65,16 @@ App.CoordinateView = Backbone.View.extend({
 
   notify: function(location) {
     this.trigger('didUpdateLocation', location);
+  },
+
+  handleGeocodingFailure: function(error) {
+    this.$el.find('span#gps-status').text("Location acquired.");
+    var location = {
+      latitude: this.loc.latitude,
+      longitude: this.loc.longitude,
+      address: ""
+    };
+    this.notify(location);
   },
 
   getValueForAttribute: function(data, valueKey, addressType) {

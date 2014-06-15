@@ -36,36 +36,75 @@ describe("CoordinateView", function() {
   });
 
   describe("When geolocation and geocoding succeeds", function() {
-    beforeEach(function() {
-      var opts = {
-        locationProvider: new helper.fakeLocationProvider2(),
-        geocodingProvider: new helper.fakeGeocoder()
-      }
-      this.coordView = new App.CoordinateView(opts);
+    beforeEach(function(){ 
+      this.locationProvider = helper.fakeLocationProvider3();
+      this.geocodingProvider = helper.fakeGeocoder2();
+  
+      this.coordView = new App.CoordinateView({
+        locationProvider: this.locationProvider,
+        geocodingProvider: this.geocodingProvider
+      });
     });
 
     it("should render the street and suburb", function(done) {
+      this.locationProvider.deferred.resolve(geopositionStub);
+      this.geocodingProvider.deferred.resolve(addressStub);
       var $el = this.coordView.render().$el;
+
       expect($el.find("#geocoded-address").text()).toBe("Old South Head Road, North Bondi");
       done();
     });
 
-    it("should fire a didUpdateLocation event", function() {
+    it("should fire a didUpdateLocation event", function(done) {
       var spy = sinon.spy(this.coordView, "notify");
       this.coordView.render();
+      this.locationProvider.deferred.resolve(geopositionStub);
+      this.geocodingProvider.deferred.resolve(addressStub);
+
       expect(spy.calledWith(locationStub)).toBe(true);
+      done();
     });
   });
 
-  describe("When geolocation succeeds and geocoding fails", function() {
-    it("should fire a didFailToGeocode event", function() {
-
+  describe("When geolocation succeeds but geocoding fails", function() {
+    beforeEach(function(){ 
+      this.locationProvider = helper.fakeLocationProvider3();
+      this.geocodingProvider = helper.fakeGeocoder2();
+  
+      this.coordView = new App.CoordinateView({
+        locationProvider: this.locationProvider,
+        geocodingProvider: this.geocodingProvider
+      });
     });
-  });
 
-  describe("When geolocation fails", function() {
-    it("should fire a didFailToUpdatePosition event", function() {
+    it("should render 'Location Acquired'", function(done) {
+      this.locationProvider.deferred.resolve(geopositionStub);
+      this.geocodingProvider.deferred.reject();
+      
+      var $el = this.coordView.render().$el;
 
+      var message = $el.find('span#gps-status');
+      expect(message).toContainText('Location acquired.');
+      done();
+    });
+
+    it("should fire a didUpdateLocation event", function(done) { 
+      var spy = sinon.spy();
+
+      var expectedLocation = {
+        latitude: latlngStub.latitude,
+        longitude: latlngStub.longitude,
+        address: ""
+      };
+
+      this.locationProvider.deferred.resolve(geopositionStub);
+      this.geocodingProvider.deferred.reject();
+
+      this.coordView.on('didUpdateLocation', spy);
+      this.coordView.render();
+
+      expect(spy).toHaveBeenCalledWith(expectedLocation);
+      done();
     });
   });
 });
