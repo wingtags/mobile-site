@@ -23,13 +23,6 @@ describe("RouterSpec", function() {
     expect(appView.geocodingProvider).toExist();
   });
 
-  it("should set the locationProvider to start updating the location", function() {
-    var spy = spyOn(App.LocationProvider.prototype, 'startUpdatingLocation');
-    new App.Router();
-
-    expect(App.LocationProvider.prototype.startUpdatingLocation).toHaveBeenCalled();
-  });
-
   xdescribe("Home route", function() {
     beforeEach(function() {
       setFixtures("<div id='app-container'></div>");

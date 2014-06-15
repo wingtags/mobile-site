@@ -60,19 +60,6 @@ describe("AppView", function() {
       expect(view).not.toExist();
     });
 
-    it("should call startUpdatingLocation on LocationProvider", function() {
-      locProviderStub = helper.fakeLocationProvider2();
-      var spy = sinon.spy(locProviderStub, 'startUpdatingLocation');
-
-      var view = new App.AppView({ 
-        locationProvider: locProviderStub,
-        geocodingProvider: helper.fakeGeocoder,
-        imageProvider: new App.ImageProvider() 
-      });
-      
-      expect(spy.calledOnce).toBeTruthy();
-    });
-
     it("should instantiate an Observation model", function() {
       expect(this.appView.model instanceof App.Observation).toBe(true);
     });

@@ -10,8 +10,6 @@ App.Router = Backbone.Router.extend({
       imageProvider:    new App.ImageProvider(),
       geocodingProvider: new App.GeocodingProvider()
     });
-    
-    //this.appView.locationProvider.getCurrentPosition();
   },
 
   home: function() {

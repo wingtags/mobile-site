@@ -8,7 +8,7 @@ App.CoordinateView = Backbone.View.extend({
     _.bindAll(this, 
       'render', 
       'renderPosition', 
-      'onSuccess',
+      'renderAddress',
       'validateOptions',
       'getValueForAttribute',
       'getAddressForPosition',
@@ -37,25 +37,29 @@ App.CoordinateView = Backbone.View.extend({
   },
 
   getAddressForPosition: function(position) {
-    this.loc.latitude = position.coords.latitude;
-    this.loc.longitude = position.coords.longitude;
+    var latlng = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    };
 
-    this.geocodingProvider.reverseGeocode(position)
-      .then(
-        this.onSuccess,
-        this.handleGeocodingFailure
-      );
+    this.loc.latitude = latlng.latitude;
+    this.loc.longitude = latlng.longitude;
+
+    this.geocodingProvider.reverseGeocode(latlng).then(
+      this.renderAddress,
+      this.handleGeocodingFailure
+    );
   },
 
   // OBSOLETE - REMOVE
   renderPosition: function(position) {
     this.geocodingProvider.reverseGeocode(position).then(
-      this.onSuccess
+      this.renderAddress
       );
     return this;
   },
 
-  onSuccess: function(data) {
+  renderAddress: function(data) {
     this.loc.address = data.results[0].formatted_address;
     var suburb = this.getValueForAttribute(data, 'long_name', 'locality');
     var street = this.getValueForAttribute(data, 'long_name', 'route');

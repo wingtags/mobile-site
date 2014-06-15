@@ -47,6 +47,10 @@ describe("LocationView", function() {
         it("LocationView should not render an AddressView", function() {
           expect(this.locationView.el).not.toContainElement('input#suburb');
         });
+
+        it("LocationView should populate its location model", function() {
+          expect(this.locationView.location.latitude).toBe(latlngStub.latitude);
+        });
       });
 
       describe("and we fail to geocode an address from the coordinates", function() {
@@ -160,39 +164,28 @@ describe("LocationView", function() {
   
   describe("When a CoordinateView is rendered", function() {
 
-    beforeEach(function(){ 
-      this.locationProvider = helper.fakeLocationProvider3();
-      this.geocodingProvider = helper.fakeGeocoder2();
-  
-      this.locationView = new App.LocationView({
-        locationProvider: this.locationProvider,
-        geocodingProvider: this.geocodingProvider
-      });
-
+    beforeEach(function(){
       this.locationProvider.deferred.resolve(geopositionStub);
+      this.geocodingProvider.deferred.resolve(addressStub);
+      this.locationView.render();
+    });
+
+    it("LocationView should populate its location model with coordinates and an address", function() {
+      expect(this.locationView.location).toEqual(locationStub);
     });
   });
 
 
 
   describe("When an AddressView is rendered", function() {
-
     beforeEach(function() {
-      this.locationView = new App.LocationView({
-        locationProvider: helper.fakeLocationProvider2({simulateMissingGeolocation: true}),
-        geocodingProvider: helper.fakeGeocoder()
-      });
+      this.locationProvider.deferred.reject();
+      this.locationView.render();
     });
 
-    it("should trigger a didUpdateLocation event when a didUpdateAddress event is received from the AddressView", function() {
-      var spy = sinon.spy();
-      this.locationView.on('didUpdateLocation', spy);
-
-      this.locationView.render();
-      this.locationView.addressView.trigger('didUpdateAddress', 'addressString');
-
-      var location = spy.args[0][0];
-      expect(location.address).toBe('addressString');
+    it("LocationView should populate its location model when a didUpdateAddress event is received from the AddressView", function() {
+      this.locationView.addressView.trigger('didUpdateAddress', 'some address');
+      expect(this.locationView.location.address).toBe('some address');
     });
   });
 });

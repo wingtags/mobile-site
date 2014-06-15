@@ -25,6 +25,7 @@ App.LocationView = Backbone.View.extend({
     this.locationProvider = options.locationProvider;
     this.geocodingProvider = options.geocodingProvider;
     this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
+    this.location = {};
   },
 
   render: function() {
@@ -40,6 +41,8 @@ App.LocationView = Backbone.View.extend({
 
   prepareCoordinateView: function(position) {
     var latlng = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+    this.location.latitude = latlng.latitude;
+    this.location.longitude = latlng.longitude;
     
     this.geocodingProvider.reverseGeocode(latlng).then(
       this.renderCoordinateView,
@@ -47,11 +50,13 @@ App.LocationView = Backbone.View.extend({
     );
   },
 
-  renderCoordinateView: function() {
+  renderCoordinateView: function(address) {
     this.coordinateView = new App.CoordinateView({
       locationProvider: this.locationProvider,
       geocodingProvider: this.geocodingProvider
     });
+
+    this.location.address = address.results[0].formatted_address;
 
     this.listenTo(this.coordinateView, 'didUpdateCoordinates', this.updateLocation);
     this.$el.html(this.coordinateView.render().el);
@@ -76,12 +81,8 @@ App.LocationView = Backbone.View.extend({
   },
 
   updateAddress: function(address) {
-    var location = {
-      'address' : address,
-      'latitude' : '',
-      'longitude' : ''
-    }
-    this.trigger('didUpdateLocation', location);
+    this.location.address = address;
+    this.trigger('didUpdateLocation', this.location);
   },
 
   updateLocation: function(location) {

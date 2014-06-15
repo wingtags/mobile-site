@@ -53,16 +53,17 @@ App.LocationProvider = Backbone.Model.extend({
     var deferred = new $.Deferred();
 
     if (this.isAvailable()) {  
-      var onSuccess = function(position) { deferred.resolve(new App.Position({geoposition: position}) ); };
-      var onError = function(error) { deferred.resolve(error); };
       var options = {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 120000
       };
 
-      this._base.getCurrentPosition(this.onSuccess, this.onError, options);
-      this._base.getCurrentPosition(onSuccess, onError, options);
+      var resolve = function(position) { deferred.resolve(position); };
+      var reject = function(error) { deferred.reject(error); };
+
+      this._base.getCurrentPosition(resolve, reject, options);
+
     } else {
       deferred.reject("Geolocation is not supported.");
       this.onError();
@@ -70,6 +71,7 @@ App.LocationProvider = Backbone.Model.extend({
 
     return deferred.promise();
   },
+
   onSuccess: function(position) { 
     var positionModel = new App.Position({ geoposition: position });
     this.set('lastLocation', positionModel);
@@ -98,23 +100,17 @@ App.GeocodingProvider = Backbone.Model.extend({
   initialize: function() {
     _.bindAll(this,
       'reverseGeocode',
-      'fetchAddress',
-      'buildLocationFromAddress'
+      '_fetchAddress'
     )
   },
 
   reverseGeocode: function(latlng) {
     var deferred = new $.Deferred();
     
-    var xhr = this.fetchAddress(latlng);
+    var xhr = this._fetchAddress(latlng);
     xhr.then(
       function(data) {
-        var location = {
-          address: data.results[0].formatted_address,
-          latitude: latlng.latitude,
-          longitude: latlng.longitude
-        };
-        deferred.resolve(location);
+        deferred.resolve(data);
       },
       function(xhr, status, error) {
         deferred.fail(error);
@@ -124,7 +120,7 @@ App.GeocodingProvider = Backbone.Model.extend({
     return deferred.promise();
   },
 
-  fetchAddress: function(coords) {
+  _fetchAddress: function(coords) {
     var xhr = $.ajax("https://maps.googleapis.com/maps/api/geocode/json",
       { 
         data: { 
@@ -136,17 +132,6 @@ App.GeocodingProvider = Backbone.Model.extend({
     );
 
     return xhr;
-  },
-
-  buildLocationFromAddress: function(data, latlng) {
-    console.log('buildLocationFromAddress', data, latlng);
-    var location = {
-      //address: data.results[0].formatted_address,
-      //latitude: latlng.latitude,
-      //longitude: latlng.longitude
-    };
-
-    return location;
   },
     
 

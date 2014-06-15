@@ -27,7 +27,6 @@ App.AppView = Backbone.View.extend({
     };
 
     this.model = new App.Observation();
-    this.locationProvider.startUpdatingLocation();
     this.subviews = [];
     this.initializeSubviews();
   },

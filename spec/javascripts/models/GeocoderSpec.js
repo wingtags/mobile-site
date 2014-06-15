@@ -13,28 +13,68 @@ describe("GeocodingProvider", function() {
     this.xhr.restore();
   });
 
-  it("should reverse geocode a Position", function() {
-    this.geo.reverseGeocode(positionStub);
 
-    expect(this.requests.length).toEqual(1);
+
+  describe("ReverseGeocode", function() {
+    //beforeEach(function() {
+    //  this.requests[0].respond(200, { "Content-Type": "application/json" }, JSON.stringify(addressStub));
+    //});
+
+    it("should make a request to google's API", function() {
+      this.geo.reverseGeocode({latitude: -33.882973359510984, longitude: 151.26951911449567});
+      var expectedUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + '-33.882973359510984' + '%2C' + '151.26951911449567' + '&sensor=true';
+      expect(this.requests[0].url).toBe(expectedUrl);
+    });
+
+    it("should return a resolved promise on success", function(done) {
+      var address_promise = this.geo.reverseGeocode(latlngStub);
+      this.requests[0].respond( 200, { "Content-Type": "application/json" }, JSON.stringify(addressStub));
+
+      address_promise.then(
+        function(address) {
+          expect(address).toEqual(addressStub);
+        },
+        function(error) {
+          expect(false).toBe(true);
+        }
+      );
+      done();
+    });
+
+    it("should return a reject promise on failure", function(done) {
+      var address_promise = this.geo.reverseGeocode(latlngStub);
+      this.requests[0].respond( 500, { "Content-Type": "application/json" }, "Server error";
+
+      address_promise.then(
+        function(address) {
+          expect(false).toBe(true);
+        },
+        function(error) {
+          expect(error).toBeTruthy();
+        }
+      );
+      done();
+    });
   });
 
-  it("should return a Position object on success", function(done) {
-    var lat = geopositionStub.coords.latitude;
-    var lon = geopositionStub.coords.longitude;
 
-    var p = this.geo.reverseGeocode({ latitude: lat, longitude: lon });
-    this.requests[0].respond(200, { "Content-Type": "application/json" }, JSON.stringify(addressStub));
 
-    p.then(
-      function(position) {
-        //console.log('promise returned with: ', position);
-        expect(position).toEqual(locationStub);//_.isEqual(position, positionStub)).toBe(true);
-      },
-      function(error) {
-        expect(error).not.toBeDefined();
-      })
-      .always(done);
+  //it("should return a Position object on success", function(done) {
+  //  var lat = geopositionStub.coords.latitude;
+  //  var lon = geopositionStub.coords.longitude;
+//
+  //  var p = this.geo.reverseGeocode({ latitude: lat, longitude: lon });
+  //  this.requests[0].respond(200, { "Content-Type": "application/json" }, JSON.stringify(addressStub));
+//
+  //  p.then(
+  //    function(position) {
+  //      //console.log('promise returned with: ', position);
+  //      expect(position).toEqual(locationStub);//_.isEqual(position, positionStub)).toBe(true);
+  //    },
+  //    function(error) {
+  //      expect(error).not.toBeDefined();
+  //    })
+  //    .always(done);
 
     //runs( 
     //  function() 
@@ -55,11 +95,7 @@ describe("GeocodingProvider", function() {
     //}); 
   });
 
-  it("should properly construct the request url", function() {
-    this.geo.reverseGeocode({latitude: -33.882973359510984, longitude: 151.26951911449567});
-    var expectedUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + '-33.882973359510984' + '%2C' + '151.26951911449567' + '&sensor=true';
-    expect(this.requests[0].url).toBe(expectedUrl);
-  });
+  
 
   xit("should return an address", function() { 
     var address = this.geo.getAddressForPosition(latlngStub);//addressStub);
