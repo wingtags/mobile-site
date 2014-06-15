@@ -8,43 +8,38 @@ App.LocationView = Backbone.View.extend({
       'renderCoordinateView',
       'renderAddressView',
       'onLocationError',
-      '_validateOptions',
+      '_processOptions',
       'renderPending',
       'prepareCoordinateView'
     );
 
-    this._validateOptions(options);
-    this.locationProvider = options.locationProvider;
-    this.geocodingProvider = options.geocodingProvider;
-    this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
-
-    this.location_promise = this.locationProvider.getCurrentPosition();
-    //this.p_location.then(
-    //  
-    //)
-        
+    this._processOptions(options);
     
   },
 
-  _validateOptions: function(options) {
+  _processOptions: function(options) {
     if (typeof options === "undefined") { throw new TypeError("Options must be supplied"); };
     if (typeof options.locationProvider === "undefined") { throw new TypeError("A LocationProvider must be supplied"); };
     if (typeof options.geocodingProvider === "undefined") { throw new TypeError("A GeocodingProvider must be supplied"); };
+
+    this.locationProvider = options.locationProvider;
+    this.geocodingProvider = options.geocodingProvider;
+    this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
   },
 
   render: function() {
     this.renderPending();
 
-    this.location_promise.then(
+    this.locationProvider.getCurrentPosition().then(
       this.prepareCoordinateView,
       this.renderAddressView
     );
-    
+
     return this;
   },
 
   prepareCoordinateView: function(position) {
-    var latlng = {latitude: position.coords.latitude, longitude: position.coords.longitude};
+    var latlng = { latitude: position.coords.latitude, longitude: position.coords.longitude };
     
     this.geocodingProvider.reverseGeocode(latlng).then(
       this.renderCoordinateView,
