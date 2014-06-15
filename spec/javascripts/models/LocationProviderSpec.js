@@ -1,69 +1,42 @@
 describe("LocationProvider", function() {
 
-  beforeEach(function() {
-    this.locationProvider = new App.LocationProvider();
-  });
-
   describe("When geolocation is not supported by the browser", function() {
-    beforeEach(function() {
-      helper.fakeLocationProvider({ simulateMissingGeolocation : true});
-    });
-
-    afterEach(function() {
-      helper.restoreLocationProvider();
-    });
-
-    //it("should raise an error on getCurrentPosition()", function() {
-    //  var spy = sinon.spy();
-    //  this.locationProvider.on('didFailToUpdateLocation', spy);
-//
-    //  this.locationProvider.getCurrentPosition();
-//
-    //  expect(spy.calledOnce).toBeTruthy();
-    //});
-
-    it("getCurrentPosition should return a failed promise", function() {
-      var locationProvider = new App.LocationProvider();
+    it("getCurrentPosition should return a failed promise", function(done) {
+      var locationProvider = helper.fakeLocationProvider2({simulateMissingGeolocation : true });//new App.LocationProvider();
       var promise = locationProvider.getCurrentPosition();
-      var out = false;
-      promise.fail(function() { out = true });
-      expect(out).toBe(true);
+      
+      promise.then(
+        function() {
+          expect(false).toBe(true);
+          done('Expected promise to have been rejected');
+        },
+        function(result) {
+          expect(true).toBe(true);
+          done();
+        },
+        function() { done(); }
+      );
     });
   });
 
   describe("When geolocation is supported by the browser", function() {
     beforeEach(function() {
-      helper.fakeLocationProvider({ simulateMissingGeolocation : false });
-    });
-
-    afterEach(function() {
-      helper.restoreLocationProvider();
+      this.locationProvider = helper.fakeLocationProvider2();
     });
 
     it("getCurrentPosition should return a promise", function(done) {
-      var locationProvider = helper.fakeLocationProvider2();
-      var promise = locationProvider.getCurrentPosition();
+      var promise = this.locationProvider.getCurrentPosition();
 
       promise.then(
         function(position) {
           expect(position).toEqual(geopositionStub);
         },
         function(error) {
-          expect(error).not.toBeDefined();
+          expect(false).toBe(true);
         }
       ).always(done);
     });
-  });
 
-  describe("getCurrentPosition", function() {
-    it("should return a promise", function() {
-      this.locationProvider.isAvailable = function() { return true; }
-      var returnObj = this.locationProvider.getCurrentPosition();
-      expect(returnObj).toExist();
-    });
-  });
-
-  describe("on success", function() {
     it("should raise a didUpdateLocation event", function() {
       var spy = sinon.spy();
       this.locationProvider.on('didUpdateLocation', spy);
@@ -80,10 +53,8 @@ describe("LocationProvider", function() {
 
       expect(this.locationProvider.get('lastLocation')).toExist();
     });
-  });
 
-  describe("on failure", function() {
-    it("should raise a didFailToUpdateLocation event", function() {
+    it("should raise a didFailToUpdateLocation event on failure", function() {
       var spy = sinon.spy();
       this.locationProvider.on('didFailToUpdateLocation', spy);
 
