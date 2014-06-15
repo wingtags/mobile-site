@@ -10,7 +10,7 @@ App.LocationView = Backbone.View.extend({
       'onLocationError',
       '_validateOptions',
       'renderPending',
-      'handlePosition'
+      'prepareCoordinateView'
     );
 
     this._validateOptions(options);
@@ -36,14 +36,14 @@ App.LocationView = Backbone.View.extend({
     this.renderPending();
 
     this.location_promise.then(
-      this.handlePosition,
+      this.prepareCoordinateView,
       this.renderAddressView
     );
     
     return this;
   },
 
-  handlePosition: function(position) {
+  prepareCoordinateView: function(position) {
     var latlng = {latitude: position.coords.latitude, longitude: position.coords.longitude};
     
     this.geocodingProvider.reverseGeocode(latlng).then(

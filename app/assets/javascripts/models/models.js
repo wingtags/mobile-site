@@ -123,34 +123,6 @@ App.GeocodingProvider = Backbone.Model.extend({
 
     return deferred.promise();
   },
-  //  if (latlng.latitude != undefined && latlng.longitude != undefined)
-  //    {
-  //      var xhr = $.ajax(
-  //      "https://maps.googleapis.com/maps/api/geocode/json",
-  //      {
-  //        data: { 
-  //          latlng: latlng.latitude + ',' + latlng.longitude, 
-  //          sensor: true
-  //        },
-  //        dataType: "json"
-  //      }
-  //    );
-  //      return xhr;
-  //    } else {
-//
-  //    var xhr = $.ajax(
-  //      "https://maps.googleapis.com/maps/api/geocode/json",
-  //      {
-  //        data: { 
-  //          latlng: latlng.get('latitude') + ',' + latlng.get('longitude'), 
-  //          sensor: true
-  //        },
-  //        dataType: "json"
-  //      }
-  //    );
-  //    return xhr;
-  //  }
-  //},
 
   fetchAddress: function(coords) {
     var xhr = $.ajax("https://maps.googleapis.com/maps/api/geocode/json",
