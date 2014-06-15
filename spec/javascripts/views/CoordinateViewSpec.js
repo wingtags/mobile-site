@@ -13,11 +13,25 @@ describe("CoordinateView", function() {
       expect(constructorFn).toThrow();
     });
 
-    xit("should raise an exception if a GeocodingProvider is not supplied", function() {
+    it("should raise an exception if a GeocodingProvider is not supplied", function() {
       var opts = { locationProvider: this.locationProvider };
       var constructorFn = function() { new App.CoordinateView(opts); };
 
       expect(constructorFn).toThrow();
+    });
+  });
+
+  describe("Before location is acquired", function() {
+    it("should render a gps status field", function() {
+      this.locationProvider = helper.fakeLocationProvider3();
+
+      this.coodinateView = new App.CoordinateView({
+        locationProvider: this.locationProvider,
+        geocodingProvider: helper.fakeGeocoder()
+      });
+      
+      var el = this.coodinateView.render().$el;
+      expect(el).toContainElement('span#gps-status');
     });
   });
 
@@ -47,11 +61,6 @@ describe("CoordinateView", function() {
     it("should fire a didFailToGeocode event", function() {
 
     });
-
-    it("should render a warning", function() {
-
-    });
-
   });
 
   describe("When geolocation fails", function() {

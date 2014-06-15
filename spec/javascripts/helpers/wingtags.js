@@ -88,3 +88,27 @@ helper.fakeLocationProvider2 = function(options) {
 
   return _provider;
 };
+
+
+helper.fakeLocationProvider3 = function(options) {
+  var fn_stash = {
+    isAvailable: App.LocationProvider.prototype.isAvailable,
+    getCurrentPosition: App.LocationProvider.prototype.getCurrentPosition,
+    startUpdatingLocation: App.LocationProvider.prototype.startUpdatingLocation
+  };
+
+  var deferred = new $.Deferred();
+
+  App.LocationProvider.prototype.startUpdatingLocation = function() {};
+  App.LocationProvider.prototype.isAvailable = function() { return true; };
+  App.LocationProvider.prototype.getCurrentPosition = function() { return deferred.promise(); }
+
+  var fake = new App.LocationProvider();
+  fake.deferred = deferred;
+
+  App.LocationProvider.prototype.startUpdatingLocation = fn_stash.startUpdatingLocation;
+  App.LocationProvider.prototype.isAvailable = fn_stash.isAvailable;
+  App.LocationProvider.prototype.getCurrentPosition = fn_stash.getCurrentPosition;
+
+  return fake;
+};
