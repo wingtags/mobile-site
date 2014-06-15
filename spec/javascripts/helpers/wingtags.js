@@ -3,6 +3,9 @@ var helper = window.helper != null ? window.helper : {};
 helper.fakeLocationProvider = function(options) {
   helper._originalIsAvailableFn = App.LocationProvider.prototype.isAvailable;
   helper._originalGetCurrentPositionFn = App.LocationProvider.prototype.getCurrentPosition;
+  helper._originalStartUpdatingLocationFn = App.LocationProvider.prototype.startUpdatingLocation;
+
+  App.LocationProvider.prototype.startUpdatingLocation = function() {};
 
   if (options != undefined) {
     if (options.simulateMissingGeolocation == true) {
@@ -21,7 +24,9 @@ helper.fakeLocationProvider = function(options) {
 helper.restoreLocationProvider = function() {
   App.LocationProvider.prototype.isAvailable = helper._originalIsAvailableFn;
   App.LocationProvider.prototype.getCurrentPosition = helper._originalGetCurrentPositionFn;
+  App.LocationProvider.prototype.startUpdatingLocation = helper._originalStartUpdatingLocationFn;
 };
+
 
 helper.stubGeocoder = function() {
   helper.originalReverseGeocodeFn = App.GeocodingProvider.prototype.reverseGeocode;
@@ -30,11 +35,12 @@ helper.stubGeocoder = function() {
     deferred.resolve(addressStub);
     return deferred.promise();
   }
-}
+};
 
 helper.restoreGeocoder = function() {
   App.GeocodingProvider.prototype.reverseGeocode = helper.originalReverseGeocodeFn;
-},
+};
+
 
 helper.fakeGeocoder = function(options) {
   var _originalReverseGeocodeFn = App.GeocodingProvider.prototype.reverseGeocode;
@@ -53,11 +59,14 @@ helper.fakeGeocoder = function(options) {
 
   App.GeocodingProvider.prototype.reverseGeocode = _originalReverseGeocodeFn;
   return geocoder;
-}
+};
 
 helper.fakeLocationProvider2 = function(options) {
   helper._originalIsAvailableFn = App.LocationProvider.prototype.isAvailable;
   helper._originalGetCurrentPositionFn = App.LocationProvider.prototype.getCurrentPosition;
+  helper._originalStartUpdatingLocationFn = App.LocationProvider.prototype.startUpdatingLocation;
+
+  App.LocationProvider.prototype.startUpdatingLocation = function() {};
 
   if (options != undefined) {
     if (options.simulateMissingGeolocation == true) {
@@ -75,6 +84,7 @@ helper.fakeLocationProvider2 = function(options) {
   
   App.LocationProvider.prototype.isAvailable = helper._originalIsAvailableFn;
   App.LocationProvider.prototype.getCurrentPosition = helper._originalGetCurrentPositionFn;
+  App.LocationProvider.prototype.startUpdatingLocation = helper._originalStartUpdatingLocationFn;
 
   return _provider;
 };

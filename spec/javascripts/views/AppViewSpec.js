@@ -3,11 +3,9 @@ describe("AppView", function() {
   beforeEach(function() {
     setFixtures("<div id='app-container'><div id='tag-capture'></div><div id='location-captyer'</div></div>");
     this.appView = new App.AppView({
-      locationProvider: new App.LocationProvider(),
+      locationProvider: helper.fakeLocationProvider2(),
       imageProvider:    new App.ImageProvider(),
-      //geocoder:         new App.Geocoder(),
-      geocodingProvider: new App.GeocodingProvider()
-
+      geocodingProvider: helper.fakeGeocoder()
     });
   });
 
@@ -63,8 +61,7 @@ describe("AppView", function() {
     });
 
     it("should call startUpdatingLocation on LocationProvider", function() {
-      var locProviderStub = new App.LocationProvider();
-      locProviderStub.isAvailable = function() { return true; };
+      locProviderStub = helper.fakeLocationProvider2();
       var spy = sinon.spy(locProviderStub, 'startUpdatingLocation');
 
       var view = new App.AppView({ 
@@ -84,9 +81,7 @@ describe("AppView", function() {
   describe("render()", function() {
 
     it("should call render on all subviews", function() {
-
-      var locationProvider = new App.LocationProvider();
-      locationProvider.isAvailable = function() { return true; }
+      var locationProvider = helper.fakeLocationProvider2();
 
       var imageProvider = new App.ImageProvider();
       imageProvider.isAvailable = function() { return true; }

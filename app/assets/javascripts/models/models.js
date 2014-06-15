@@ -19,7 +19,14 @@ App.Position = Backbone.Model.extend({
   
 App.LocationProvider = Backbone.Model.extend({
   initialize: function() {
-    _.bindAll(this, 'isAvailable', 'startUpdatingLocation', 'getCurrentPosition', 'onSuccess', 'onError');
+    _.bindAll(
+      this, 
+      'isAvailable', 
+      'startUpdatingLocation', 
+      'getCurrentPosition', 
+      'onSuccess', 
+      'onError'
+    );
 
     if (this.isAvailable()) { 
       this._base = window.navigator.geolocation;

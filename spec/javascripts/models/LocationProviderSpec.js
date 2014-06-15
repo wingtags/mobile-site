@@ -2,7 +2,7 @@ describe("LocationProvider", function() {
 
   describe("When geolocation is not supported by the browser", function() {
     it("getCurrentPosition should return a failed promise", function(done) {
-      var locationProvider = helper.fakeLocationProvider2({simulateMissingGeolocation : true });//new App.LocationProvider();
+      var locationProvider = helper.fakeLocationProvider2({simulateMissingGeolocation : true });
       var promise = locationProvider.getCurrentPosition();
       
       promise.then(
