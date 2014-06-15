@@ -3,6 +3,10 @@ describe("LocationView", function() {
   beforeEach(function() {
     this.locationProvider = new helper.fakeLocationProvider3();
     this.geocodingProvider = new helper.fakeGeocoder2();
+    this.locationView = new App.LocationView({
+      locationProvider: this.locationProvider,
+      geocodingProvider: this.geocodingProvider
+    });
   });
 
   it("should raise an exception if a LocationProvider is not supplied", function() {
@@ -19,25 +23,67 @@ describe("LocationView", function() {
 
 
   describe("When geolocation is supported by the browser", function() {
-
-    beforeEach(function() {
-      var options = {
-        locationProvider: helper.fakeLocationProvider2(),
-        geocodingProvider: helper.fakeGeocoder()
-      };
-
-      this.locationView = new App.LocationView(options);
+    
+    it("LocationView should render a 'loading' view while location is acquired", function() {  
+      var $el = this.locationView.render().$el;
+      expect($el).toContainText('Getting Location...');
     });
 
-    it("should render a CoordinateView", function() {
-      this.locationView.render();
-      expect(this.locationView.coordinateView).toExist();
+    describe("and we successfully acquire location coordinates", function() {
+      beforeEach(function() {
+        this.locationProvider.deferred.resolve(geopositionStub);
+      });
+
+      describe("and we successfully geocode an address from the coordinates", function(){ 
+        beforeEach(function() {
+          this.geocodingProvider.deferred.resolve(addressStub);
+          this.locationView.render();
+        });
+
+        it("LocationView should render a CoordinateView", function() {      
+          expect(this.locationView.coordinateView).toExist();
+        });
+  
+        it("LocationView should not render an AddressView", function() {
+          expect(this.locationView.el).not.toContainElement('input#suburb');
+        });
+      });
+
+      describe("and we fail to geocode an address from the coordinates", function() {
+        beforeEach(function() {
+          this.geocodingProvider.deferred.reject();
+          this.locationView.render();
+        });
+    
+        it("LocationView should render an AddressView", function() {
+          expect(this.locationView.addressView).toExist();
+        });
+    
+        it("LocationView should not render a CoordinateView", function() {
+          expect(this.locationView.el).not.toContainElement('span#gps-status');
+        });
+      });
     });
 
-    it("should not render an AddressView", function() {
-      this.locationView.render();
-      expect(this.locationView.el).not.toContainElement('input#suburb');
+
+    describe("and we fail to acquire location coordinates", function() {
+      beforeEach(function() {
+        this.locationProvider.deferred.reject();
+        this.locationView.render();
+      });
+
+      it("should render an AddressView", function() {
+        expect(this.locationView.addressView).toExist();
+      });
+  
+      it("should not render a CoordinateView", function() {
+        expect(this.locationView.el).not.toContainElement('span#gps-status');
+      });
     });
+
+    
+
+    
 
     // Define behaviour in CoordinateView first
     xit("should raise a didUpdateLocation event when geolocation completes", function() {
@@ -78,11 +124,15 @@ describe("LocationView", function() {
 
 
   describe("When geolocation is not supported by the browser", function() {
+    //beforeEach(function() {
+    //  this.locationView = new App.LocationView({ 
+    //    locationProvider: helper.fakeLocationProvider2({ simulateMissingGeolocation: true }),
+    //    geocodingProvider: helper.fakeGeocoder()
+    //  });
+    //});
+
     beforeEach(function() {
-      this.locationView = new App.LocationView({ 
-        locationProvider: helper.fakeLocationProvider2({ simulateMissingGeolocation: true }),
-        geocodingProvider: helper.fakeGeocoder()
-      });
+      this.locationProvider.deferred.reject();
     });
 
     it("should render an AddressView", function() {
@@ -121,16 +171,6 @@ describe("LocationView", function() {
 
       this.locationProvider.deferred.resolve(geopositionStub);
     });
-
-    describe("and Geolocation fails", function() {
-      it("The LocationView should remove the CoordinateView and render an AddressView", function() {
-        this.geocodingProvider.deferred.reject();
-        var $el = this.locationView.render().$el;
-
-        expect($el).not.toContainElement('#gps-status');
-
-      });
-    });
   });
 
 
@@ -153,26 +193,6 @@ describe("LocationView", function() {
 
       var location = spy.args[0][0];
       expect(location.address).toBe('addressString');
-    });
-  });
-
-
-  
-
-
-  describe("When there is an error during geolocaiton", function() {
-    beforeEach(function() {
-      this.locationView = new App.LocationView({ 
-        locationProvider: helper.fakeLocationProvider2({ simulateMissingGeolocation: true }),
-        geocodingProvider: helper.fakeGeocoder()
-      });
-    });
-
-    it("renders an addressView", function() {
-      this.locationView.locationProvider.trigger('didFailToUpdateLocation', {});
-
-      expect(this.locationView.el).toContainElement('input#suburb');
-      expect(this.locationView.el).not.toContainElement('span#gps-status');
     });
   });
 });

@@ -61,7 +61,7 @@ helper.fakeGeocoder = function(options) {
   return geocoder;
 };
 
-helper.fakeGeocoder2 = function(options) {
+helper.fakeGeocoder2 = function(latlng) {
   var _originalReverseGeocodeFn = App.GeocodingProvider.prototype.reverseGeocode;
   var deferred = new $.Deferred();
 

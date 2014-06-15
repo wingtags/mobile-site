@@ -8,18 +8,22 @@ App.LocationView = Backbone.View.extend({
       'renderCoordinateView',
       'renderAddressView',
       'onLocationError',
-      '_validateOptions'
+      '_validateOptions',
+      'renderPending',
+      'handlePosition'
     );
 
     this._validateOptions(options);
     this.locationProvider = options.locationProvider;
     this.geocodingProvider = options.geocodingProvider;
     this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
+
+    this.location_promise = this.locationProvider.getCurrentPosition();
+    //this.p_location.then(
+    //  
+    //)
         
-    this.coordinateView = new App.CoordinateView({
-      locationProvider: this.locationProvider,
-      geocodingProvider: this.geocodingProvider
-    });
+    
   },
 
   _validateOptions: function(options) {
@@ -29,29 +33,50 @@ App.LocationView = Backbone.View.extend({
   },
 
   render: function() {
-    if (this.locationProvider.isAvailable()) {
-      this.renderCoordinateView();        
-    } else {
-      this.renderAddressView();
-    }
+    this.renderPending();
+
+    this.location_promise.then(
+      this.handlePosition,
+      this.renderAddressView
+    );
+    
     return this;
   },
 
+  handlePosition: function(position) {
+    var latlng = {latitude: position.coords.latitude, longitude: position.coords.longitude};
+    
+    this.geocodingProvider.reverseGeocode(latlng).then(
+      this.renderCoordinateView,
+      this.renderAddressView
+    );
+  },
+
   renderCoordinateView: function() {
+    this.coordinateView = new App.CoordinateView({
+      locationProvider: this.locationProvider,
+      geocodingProvider: this.geocodingProvider
+    });
+
     this.listenTo(this.coordinateView, 'didUpdateCoordinates', this.updateLocation);
-    this.$el.append(this.coordinateView.render().el);
+    this.$el.html(this.coordinateView.render().el);
   },
 
   renderAddressView: function() {
     this.addressView = new App.AddressView();
     this.listenTo(this.addressView, 'didUpdateAddress', this.updateAddress);
-    this.$el.append(this.addressView.render().el);
+    this.$el.html(this.addressView.render().el);
+  },
+
+  renderPending: function() {
+    this.$el.html(JST['location/pending']())
+    console.log('render pending: ', this);
   },
 
   onLocationError: function(e) {
     console.log("ON LOCATION ERROR");
     console.log("this: ", this);
-    this.coordinateView.remove();
+    //this.coordinateView.remove();
     this.renderAddressView();
   },
 
