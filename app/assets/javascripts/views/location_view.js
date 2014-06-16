@@ -70,7 +70,7 @@ App.LocationView = Backbone.View.extend({
   },
 
   renderAddressView: function() {
-    this.addressView = new App.AddressView();
+    this.addressView = new App.AddressView({ model: this.model });
     this.listenTo(this.addressView, 'didUpdateAddress', this.updateAddress);
     this.$el.html(this.addressView.render().el);
   },

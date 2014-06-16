@@ -1,8 +1,14 @@
 describe("AddressView", function() {
 
   beforeEach(function() {
-    this.view = new App.AddressView();
+    this.model = new App.Observation();
+    this.view = new App.AddressView({ model: this.model });
     this.$el = this.view.render().$el;
+  });
+
+  it("should raise an exception if a model object is not supplied", function() {
+    var constructorFn = function() { new App.AddressView; };
+    expect(constructorFn).toThrow();
   });
 
   it("should render a suburb field", function() {

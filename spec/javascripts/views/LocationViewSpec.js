@@ -3,9 +3,11 @@ describe("LocationView", function() {
   beforeEach(function() {
     this.locationProvider = new helper.fakeLocationProvider3();
     this.geocodingProvider = new helper.fakeGeocoder2();
+    this.observation = new App.Observation();
     this.locationView = new App.LocationView({
       locationProvider: this.locationProvider,
-      geocodingProvider: this.geocodingProvider
+      geocodingProvider: this.geocodingProvider,
+      model: this.observation
     });
   });
 

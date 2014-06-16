@@ -8,8 +8,13 @@ App.AddressView = Backbone.View.extend({
     'keyup #street' : 'updateAddress'
   },
 
-  initialize: function() {
-    _.bindAll(this, 'render', 'updateAddress');
+  initialize: function(options) {
+    _.bindAll(this, 
+      'render', 
+      'updateAddress',
+      '_validateOptions');
+
+    this._validateOptions(options);
   },
 
   render: function() {
@@ -20,5 +25,12 @@ App.AddressView = Backbone.View.extend({
   updateAddress: function() {
     var address = this.$el.find('#street').val() + ', ' + this.$el.find('#suburb').val();
     this.trigger('didUpdateAddress', address);
+  },
+
+  _validateOptions: function(options) {
+    if (typeof options === "undefined") { throw new Error("Options must be supplied"); };
+    if (typeof options.model === "undefined") { throw new Error("A model object must be supplied"); };
+
+    this.model = options.model;
   }
 });
