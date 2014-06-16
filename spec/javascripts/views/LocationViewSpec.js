@@ -23,7 +23,7 @@ describe("LocationView", function() {
     expect(constructorFn).toThrow(new TypeError("A GeocodingProvider must be supplied"));
   });
 
-  xit("should raise an exception if an Observation model is not supplied", function() {
+  it("should raise an exception if an Observation model is not supplied", function() {
     var options = { locationProvider: this.locationProvider, geocodingProvider: this.geocodingProvider };
     var constructorFn = function() { new App.LocationView(options); };
     expect(constructorFn).toThrow(new TypeError("An Observation model must be supplied"));

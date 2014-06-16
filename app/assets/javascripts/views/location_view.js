@@ -21,12 +21,10 @@ App.LocationView = Backbone.View.extend({
     if (typeof options === "undefined") { throw new TypeError("Options must be supplied"); };
     if (typeof options.locationProvider === "undefined") { throw new TypeError("A LocationProvider must be supplied"); };
     if (typeof options.geocodingProvider === "undefined") { throw new TypeError("A GeocodingProvider must be supplied"); };
-    //Reinstate this later
-    //if (typeof options.model === "undefined") { throw new TypeError("An Observation model must be supplied"); };
+    if (typeof options.model === "undefined") { throw new TypeError("An Observation model must be supplied"); };
 
     this.locationProvider = options.locationProvider;
     this.geocodingProvider = options.geocodingProvider;
-    this.model = options.model || new App.Observation;
     this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
     this.location = {};
   },

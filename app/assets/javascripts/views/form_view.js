@@ -48,7 +48,8 @@ App.FormView = Backbone.View.extend({
   initializeLocationView: function() {
     var view = new App.LocationView({ 
       locationProvider: this.locationProvider,
-      geocodingProvider: this.geocodingProvider
+      geocodingProvider: this.geocodingProvider,
+      model: this.model
     });
     this.listenTo(view, 'didUpdateLocation2', this.updateLocation);
     this.subviews.push(view);
