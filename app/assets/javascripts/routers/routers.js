@@ -5,7 +5,7 @@ App.Router = Backbone.Router.extend({
   routes: { '': 'home' },
 
   initialize: function() {
-    this.appView = new App.AppView({
+    this.formView = new App.FormView({
       locationProvider: new App.LocationProvider(),
       imageProvider:    new App.ImageProvider(),
       geocodingProvider: new App.GeocodingProvider()
@@ -14,6 +14,6 @@ App.Router = Backbone.Router.extend({
 
   home: function() {
     $('#app-container').empty();
-    $('#app-container').append(this.appView.render().el);
+    $('#app-container').append(this.formView.render().el);
   }
 });

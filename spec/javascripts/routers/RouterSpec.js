@@ -11,16 +11,16 @@ describe("RouterSpec", function() {
     helper.restoreGeocoder();
   });
 
-  xit("should create an AppView", function() {
+  xit("should create an FormView", function() {
     expect(this.router instanceof App.Router).toBeTruthy();
   });
 
-  xit("should configure the AppView with a locationProvider, imageProvider and geocoder", function() {
-    var appView = this.router.appView;
+  xit("should configure the FormView with a locationProvider, imageProvider and geocoder", function() {
+    var formView = this.router.formView;
 
-    expect(appView.locationProvider).toExist();
-    expect(appView.imageProvider).toExist();
-    expect(appView.geocodingProvider).toExist();
+    expect(formView.locationProvider).toExist();
+    expect(formView.imageProvider).toExist();
+    expect(formView.geocodingProvider).toExist();
   });
 
   xdescribe("Home route", function() {

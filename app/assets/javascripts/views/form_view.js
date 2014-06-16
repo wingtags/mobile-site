@@ -1,6 +1,6 @@
 var App = window.App != null ? window.App : {};
 
-App.AppView = Backbone.View.extend({
+App.FormView = Backbone.View.extend({
   tagName: 'form', 
 
   attributes: { 'method':'POST', 'ENCTYPE':'multipart/form-data', 'ACTION':'/observations/new'},
