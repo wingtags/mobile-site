@@ -19,6 +19,16 @@ describe("AddressView", function() {
     expect(this.$el).toContainElement('#street');
   });
 
+  it("should set the suburb property of the model on input", function() {
+    this.$el.find('#suburb').val('Bondi').keyup();
+    expect(this.model.get('suburb')).toBe('Bondi');
+  });
+
+  it("should set the street property of the model on input", function() {
+    this.$el.find('#street').val('Campbell Parade').keyup();
+    expect(this.model.get('street')).toBe('Campbell Parade');
+  });
+
   it("should trigger a didUpdateAddress event on suburb or street entry", function() {
     var spy = sinon.spy();
     this.view.on('didUpdateAddress', spy);

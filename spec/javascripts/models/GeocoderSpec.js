@@ -43,7 +43,7 @@ describe("GeocodingProvider", function() {
 
     it("should return a reject promise on failure", function(done) {
       var address_promise = this.geo.reverseGeocode(latlngStub);
-      this.requests[0].respond( 500, { "Content-Type": "application/json" }, "Server error";
+      this.requests[0].respond( 500, { "Content-Type": "application/json" }, "{'error': 'Server error'}");
 
       address_promise.then(
         function(address) {
@@ -93,7 +93,7 @@ describe("GeocodingProvider", function() {
     //}, function() {
     //  expect(true).toBe(false);
     //}); 
-  });
+  //});
 
   
 
@@ -106,3 +106,4 @@ describe("GeocodingProvider", function() {
   });
 
 });
+
