@@ -48,7 +48,7 @@ App.AppView = Backbone.View.extend({
   initializeLocationView: function() {
     var view = new App.LocationView({ 
       locationProvider: this.locationProvider,
-      geocodingProvider: this.geocodingProvider 
+      geocodingProvider: this.geocodingProvider
     });
     this.listenTo(view, 'didUpdateLocation2', this.updateLocation);
     this.subviews.push(view);
@@ -116,6 +116,9 @@ App.AppView = Backbone.View.extend({
   preparePayload: function() {
     var data = new FormData();
     data.append('animal_identifier', this.model.get('animalIdentifier'));
+    data.append('address', this.model.get('address'));
+    data.append('latitude', this.model.get('latitude'));
+    data.append('longitude', this.model.get('longitude'));
     data.append('image', this.model.get('image'));
     this.send(data);
   },

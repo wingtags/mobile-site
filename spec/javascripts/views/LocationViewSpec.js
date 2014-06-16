@@ -21,12 +21,20 @@ describe("LocationView", function() {
     expect(constructorFn).toThrow(new TypeError("A GeocodingProvider must be supplied"));
   });
 
+  xit("should raise an exception if an Observation model is not supplied", function() {
+    var options = { locationProvider: this.locationProvider, geocodingProvider: this.geocodingProvider };
+    var constructorFn = function() { new App.LocationView(options); };
+    expect(constructorFn).toThrow(new TypeError("An Observation model must be supplied"));
+  });
+
 
   describe("When geolocation is supported by the browser", function() {
-    
+    beforeEach(function() {
+      this.locationView.render();
+    });
+
     it("LocationView should render a 'loading' view while location is acquired", function() {  
-      var $el = this.locationView.render().$el;
-      expect($el).toContainText('Getting Location...');
+      expect(this.locationView.$el).toContainText('Getting Location...');
     });
 
     describe("and we successfully acquire location coordinates", function() {
@@ -34,10 +42,15 @@ describe("LocationView", function() {
         this.locationProvider.deferred.resolve(geopositionStub);
       });
 
+      it("LocationView should set the coordinate properties on its observation model", function() {
+        var observation = this.locationView.model;
+        expect(observation.get('latitude')).toBe(latlngStub.latitude);
+        expect(observation.get('longitude')).toBe(latlngStub.longitude);
+      });
+
       describe("and we successfully geocode an address from the coordinates", function(){ 
         beforeEach(function() {
           this.geocodingProvider.deferred.resolve(addressStub);
-          this.locationView.render();
         });
 
         it("LocationView should render a CoordinateView", function() {      
@@ -48,15 +61,20 @@ describe("LocationView", function() {
           expect(this.locationView.el).not.toContainElement('input#suburb');
         });
 
+        // Deprecate
         it("LocationView should populate its location model", function() {
           expect(this.locationView.location.latitude).toBe(latlngStub.latitude);
+        });
+
+        it("LocationView should set the address property of its observation model to the geocoded address", function() {
+          expect(this.locationView.model.get('address')).toBe(locationStub.address);
         });
       });
 
       describe("and we fail to geocode an address from the coordinates", function() {
         beforeEach(function() {
           this.geocodingProvider.deferred.reject();
-          this.locationView.render();
+          //this.locationView.render();
         });
     
         it("LocationView should render an AddressView", function() {
@@ -128,13 +146,6 @@ describe("LocationView", function() {
 
 
   describe("When geolocation is not supported by the browser", function() {
-    //beforeEach(function() {
-    //  this.locationView = new App.LocationView({ 
-    //    locationProvider: helper.fakeLocationProvider2({ simulateMissingGeolocation: true }),
-    //    geocodingProvider: helper.fakeGeocoder()
-    //  });
-    //});
-
     beforeEach(function() {
       this.locationProvider.deferred.reject();
     });
@@ -161,19 +172,20 @@ describe("LocationView", function() {
     });
   });
 
-  
-  describe("When a CoordinateView is rendered", function() {
-
-    beforeEach(function(){
-      this.locationProvider.deferred.resolve(geopositionStub);
-      this.geocodingProvider.deferred.resolve(addressStub);
-      this.locationView.render();
-    });
-
-    it("LocationView should populate its location model with coordinates and an address", function() {
-      expect(this.locationView.location).toEqual(locationStub);
-    });
-  });
+  // Deprecate 
+  //
+  //describe("When a CoordinateView is rendered", function() {
+//
+  //  beforeEach(function(){
+  //    this.locationProvider.deferred.resolve(geopositionStub);
+  //    this.geocodingProvider.deferred.resolve(addressStub);
+  //    this.locationView.render();
+  //  });
+//
+  //  it("LocationView should populate its location model with coordinates and an address", function() {
+  //    expect(this.locationView.location).toEqual(locationStub);
+  //  });
+  //});
 
 
 

@@ -21,9 +21,12 @@ App.LocationView = Backbone.View.extend({
     if (typeof options === "undefined") { throw new TypeError("Options must be supplied"); };
     if (typeof options.locationProvider === "undefined") { throw new TypeError("A LocationProvider must be supplied"); };
     if (typeof options.geocodingProvider === "undefined") { throw new TypeError("A GeocodingProvider must be supplied"); };
+    //Reinstate this later
+    //if (typeof options.model === "undefined") { throw new TypeError("An Observation model must be supplied"); };
 
     this.locationProvider = options.locationProvider;
     this.geocodingProvider = options.geocodingProvider;
+    this.model = options.model || new App.Observation;
     this.locationProvider.on('didFailToUpdateLocation', this.onLocationError);
     this.location = {};
   },
@@ -43,6 +46,9 @@ App.LocationView = Backbone.View.extend({
     var latlng = { latitude: position.coords.latitude, longitude: position.coords.longitude };
     this.location.latitude = latlng.latitude;
     this.location.longitude = latlng.longitude;
+
+    this.model.set('latitude', latlng.latitude);
+    this.model.set('longitude', latlng.longitude);
     
     this.geocodingProvider.reverseGeocode(latlng).then(
       this.renderCoordinateView,
@@ -57,6 +63,7 @@ App.LocationView = Backbone.View.extend({
     });
 
     this.location.address = address.results[0].formatted_address;
+    this.model.set('address', address.results[0].formatted_address);
 
     this.listenTo(this.coordinateView, 'didUpdateCoordinates', this.updateLocation);
     this.$el.html(this.coordinateView.render().el);
