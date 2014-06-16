@@ -28,14 +28,4 @@ describe("AddressView", function() {
     this.$el.find('#street').val('Campbell Parade').keyup();
     expect(this.model.get('street')).toBe('Campbell Parade');
   });
-
-  it("should trigger a didUpdateAddress event on suburb or street entry", function() {
-    var spy = sinon.spy();
-    this.view.on('didUpdateAddress', spy);
-
-    this.$el.find('#suburb').val('Bondi').keyup();
-    this.$el.find('#street').val('Campbell Parade').keyup();
-
-    expect(spy.calledWith('Campbell Parade, Bondi')).toBeTruthy();
-  });
 });
