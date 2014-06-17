@@ -121,6 +121,7 @@ App.FormView = Backbone.View.extend({
     data.append('latitude', this.model.get('latitude'));
     data.append('longitude', this.model.get('longitude'));
     data.append('image', this.model.get('image'));
+    data.append('utc_time', new Date().getTime());
     this.send(data);
   },
 
