@@ -31,6 +31,11 @@ GEM
       tzinfo (~> 0.3.37)
     ansi (1.4.3)
     arel (4.0.2)
+    aws-sdk-core (2.0.0.rc9)
+      builder (~> 3.0)
+      jamespath
+      multi_json (~> 1.0)
+      multi_xml (~> 0.5)
     backbone-on-rails (1.1.1.0)
       actionmailer
       actionpack
@@ -71,6 +76,7 @@ GEM
       rails (>= 3, < 5)
     hike (1.2.3)
     i18n (0.6.9)
+    jamespath (0.5.0)
     jasmine (2.0.2)
       jasmine-core (~> 2.0.0)
       phantomjs
@@ -93,6 +99,7 @@ GEM
     mini_portile (0.6.0)
     minitest (4.7.5)
     multi_json (1.9.2)
+    multi_xml (0.5.5)
     nobrainer (0.13.1)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
@@ -184,6 +191,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk-core (~> 2.0.0.rc7)
   backbone-on-rails
   capybara
   capybara-webkit

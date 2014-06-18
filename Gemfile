@@ -33,6 +33,9 @@ gem 'zurb-foundation'
 # Manage environment variables
 gem 'figaro'
 
+# Amazon web services
+gem 'aws-sdk-core', '~> 2.0.0.rc7'
+
 group :development, :test do
 	gem 'jasmine'	
   gem 'jasmine-jquery-rails'
