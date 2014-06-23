@@ -3,7 +3,7 @@ var App = window.App != null ? window.App : {};
 App.FormView = Backbone.View.extend({
   tagName: 'form', 
 
-  attributes: { 'method':'POST', 'ENCTYPE':'multipart/form-data', 'ACTION':'/observations/new'},
+  attributes: { 'method':'POST', 'ENCTYPE':'multipart/form-data', 'ACTION':'/observations'},
 
   initialize: function(options) {
     _.bindAll(this, 
@@ -81,10 +81,6 @@ App.FormView = Backbone.View.extend({
     var el = subview.render().el;
     this.$el.append(el);
   },
-
-
-
-
 
   addCsrfToken: function() {
      var token = $("meta[name='csrf-token']").attr('content');

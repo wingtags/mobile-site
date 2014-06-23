@@ -190,6 +190,30 @@ App.GeocodingProvider = Backbone.Model.extend({
 App.Address = Backbone.Model.extend({ });
 
 App.Observation = Backbone.Model.extend({
+  validate: function(attrs, options) {
+    var errors = [];
+    var attrs = typeof(attrs) === "undefined" ? this.attributes : attrs;
+
+    if (typeof(attrs.tag) === "undefined") { 
+      errors.push({
+        'code' : 'missing_field',
+        'title' : 'You need to enter a tag number',
+        'path' : '/tag',
+      });
+    }
+
+    if (_.isUndefined(attrs.suburb)) {
+      if (_.isUndefined(attrs.latitude) && _.isUndefined(attrs.longitude)) {
+        errors.push({
+          'code' : 'missing_field',
+          'title' : 'You need to enter a suburb',
+          'path' : '/suburb'
+        });
+      }
+    }
+
+    if (errors.length > 0) { return errors; }
+  }
   // image
   // latitude
   // longitude
