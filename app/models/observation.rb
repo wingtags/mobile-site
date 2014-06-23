@@ -1,15 +1,18 @@
 class Observation
+  include ActiveModel::Model
+  include ActiveModel::Serializers
   include NoBrainer::Document
 
-  store_in :database => 'wingtags_development', :table => 'Sighting'
+  attr_accessor :id, :animal_id, :observer_id, :images,  :latitude,  :longitude,  :address,  :notes,  :timestamp
 
-  belongs_to :animal
-  belongs_to :user
+  validates_presence_of :id, :animal_id, :observer_id, :timestamp
 
-  field :ImageURL
-  field :Latitude
-  field :Longitude
-  field :Location
-  field :Notes
-  field :SightingDate
+  validate :location_information
+
+
+  private
+
+  def location_information
+  end
+
 end

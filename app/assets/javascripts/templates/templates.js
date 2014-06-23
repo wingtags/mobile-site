@@ -13,5 +13,6 @@ JST['image'] = _.template("\
       <a href='#' id='camera-select' class='button expand'>Add Photo</a> \
     </div> \
   </div>");
+JST['thanks'] = _.template("<div class='row'> <div class='large-12 columns text-center'> <h2>Thanks!</h2> <p>You've just found <strong><%= name %></strong>.</p> <p> <a href='http://localhost:3000'>Report another cockatoo</a><br /> <a href='https://www.facebook.com/CockatooWingtags'>Visit us on Facebook</a> </p> </div> </div>");
 
 window.JST = JST;

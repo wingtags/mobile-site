@@ -67,6 +67,12 @@ describe("FormView", function() {
     });
   });
 
+  describe("send()", function() {
+    it("Should not include an image attribute if no image is captured"), function() {
+      
+    }
+  });
+
   describe("render()", function() {
 
     it("should call render on all subviews", function() {

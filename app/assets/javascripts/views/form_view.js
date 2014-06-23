@@ -17,7 +17,9 @@ App.FormView = Backbone.View.extend({
       'updateAnimalIdentifier',
       'updateImage',
       'preparePayload',
-      'send'
+      'send',
+      'removeSubviews',
+      'renderThanks'
     );
 
     if (options !== undefined) {
@@ -125,22 +127,30 @@ App.FormView = Backbone.View.extend({
     this.send(data);
   },
 
+  removeSubviews: function() {
+    this.subviews.forEach(
+      function(view) { 
+        view.remove(); 
+      }
+    );
+  },
+
+  renderThanks: function(data) {
+    this.removeSubviews();
+    var animal_id = data.observations[0].links.animal;
+    this.$el.html(JST['thanks']({name: 'Louiz'}));
+  },
+
   send: function(formData) {
-    $.ajax({
-      url: 'observations/new',
+    var promise = $.ajax({
+      url: 'observations',
       type: 'POST',
       data: formData,
       processData: false,
-      contentType: false,
-      success: function(xhr)
-      {
-        console.log(xhr.data);
-      },
-      error: function(xhr)
-      {
-        console.log(xhr.data);
-      }
+      contentType: false
     });
+
+    promise.done( this.renderThanks );
   }
 });
 
