@@ -66,7 +66,7 @@ App.FormView = Backbone.View.extend({
   },
 
   initializeSubmitView: function() {
-    var view = new App.SubmitView();
+    var view = new App.SubmitView({ model: this.model });
     this.listenTo(view, 'sendForm', this.preparePayload);
     this.subviews.push(view);
   },

@@ -5,7 +5,7 @@ JST['location/address'] = _.template("<div id='address-template'><div class='row
 JST['location/gps'] = _.template("<div id='coordinate-template'><div class='row'><div class='large-6 columns'><div class='panel'><p><span id='gps-status'>Latitude: <%= latitude %>, Longitude: <%= longitude %></span></p></div></div></div>");
 JST['location/geocoded-address'] = _.template("<div class='row'><div class='large-6 columns'><div class='panel'><p><span id='geocoded-address'><%= addressString %></span></p></div></div></div>");
 JST['location/pending'] = _.template("<div id='coordinate-template'><div class='row'><div class='large-6 columns'><div class='panel'><p><span id='gps-status'>Getting Location...</span></p></div></div></div>");
-JST['submit'] = _.template("<div class='row'><div class='large-6 columns' id='submit'><input type=submit class='success button expand' value='Submit'></div></div>");
+JST['submit'] = _.template("<div class='row'><div class='large-6 columns' id='submit'><input type=submit class='success button expand disabled' value='Submit'></div></div>");
 JST['image'] = _.template("\
   <div class='row'> \
     <div class='large-6 columns' id='image-container'> \

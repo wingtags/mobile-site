@@ -8,12 +8,33 @@ App.SubmitView = Backbone.View.extend({
   },
   
   initialize: function() {
-    _.bindAll(this, 'render', 'handleSubmit');
+    _.bindAll(
+      this,
+      'render',
+      'handleSubmit',
+      'toggleButton'
+    );
+
+    if (!(_.isUndefined(this.model))) {
+      console.log('model: ', this.model);
+      this.listenTo(this.model, 'change', this.toggleButton);
+    }
   },
 
   render: function() {
     $(this.el).html(this.template());
     return this;
+  },
+
+  toggleButton: function() {
+    var button = this.$el.find('input');
+    if (this.model.isValid()) {
+      console.log('model is valid!', this.model);
+      button.removeClass('disabled');
+    } else {
+      console.log('model is not valid!', this.model);
+      button.addClass('disabled');
+    }
   },
 
   handleSubmit: function(event)
