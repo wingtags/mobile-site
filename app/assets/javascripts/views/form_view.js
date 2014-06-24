@@ -88,7 +88,7 @@ App.FormView = Backbone.View.extend({
   },
 
   updateAnimalIdentifier: function(newIdentifier) {
-    this.model.set('animalIdentifier', newIdentifier);
+    this.model.set('tag', newIdentifier);
   },
 
   updateAddress: function(address) {
@@ -114,7 +114,7 @@ App.FormView = Backbone.View.extend({
 
   preparePayload: function() {
     var data = new FormData();
-    data.append('animal_identifier', this.model.get('animalIdentifier'));
+    data.append('tag', this.model.get('tag'));
     data.append('address', this.model.get('address'));
     data.append('latitude', this.model.get('latitude'));
     data.append('longitude', this.model.get('longitude'));
