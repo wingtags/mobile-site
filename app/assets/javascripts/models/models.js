@@ -194,16 +194,17 @@ App.Observation = Backbone.Model.extend({
     var errors = [];
     var attrs = typeof(attrs) === "undefined" ? this.attributes : attrs;
 
-    if (typeof(attrs.tag) === "undefined") { 
+    if (_.isUndefined(attrs.tag) || attrs.tag.length === 0) { 
       errors.push({
         'code' : 'missing_field',
-        'title' : 'You need to enter a tag number',
+        'title' : 'Please enter a tag number',
         'path' : '/tag',
       });
     }
 
-    if (_.isUndefined(attrs.suburb)) {
-      if (_.isUndefined(attrs.latitude) && _.isUndefined(attrs.longitude)) {
+    if (_.isUndefined(attrs.latitude) || _.isUndefined(attrs.longitude) ||
+        attrs.latitude.length === 0 || attrs.longitude.length === 0) {
+      if (_.isUndefined(attrs.suburb) || attrs.suburb.length === 0) {
         errors.push({
           'code' : 'missing_field',
           'title' : 'You need to enter a suburb',

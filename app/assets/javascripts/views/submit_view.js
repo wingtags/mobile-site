@@ -29,10 +29,10 @@ App.SubmitView = Backbone.View.extend({
   toggleButton: function() {
     var button = this.$el.find('input');
     if (this.model.isValid()) {
-      console.log('model is valid!', this.model);
+      this.isSubmittable = true;
       button.removeClass('disabled');
     } else {
-      console.log('model is not valid!', this.model);
+      this.isSubmittable = false;
       button.addClass('disabled');
     }
   },
@@ -40,8 +40,7 @@ App.SubmitView = Backbone.View.extend({
   handleSubmit: function(event)
   {
     event.preventDefault();
-    this.trigger('sendForm');
-    console.log('Click submit');
+    if (this.isSubmittable) { this.trigger('sendForm'); }
     
     //var file = document.getElementById('camera-input');
     //var tag = document.getElementById('animal-identifier');
