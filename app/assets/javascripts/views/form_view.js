@@ -132,9 +132,11 @@ App.FormView = Backbone.View.extend({
   },
 
   renderThanks: function(data) {
+    name = data.linked.animals[0].name;
+    console.log('animal name: ', name);
     this.removeSubviews();
     var animal_id = data.observations[0].links.animal;
-    this.$el.html(JST['thanks']({name: 'Louiz'}));
+    this.$el.html(JST['thanks']({name: name}));
   },
 
   send: function(formData) {

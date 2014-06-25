@@ -43,10 +43,10 @@ class ObservationsController < ApplicationController
   end
 
   def create
-    tag = params['animal_identifier'].to_i
+    tag = params['tag'].to_i
 
     animal_cursor = NoBrainer.run{ |r| r.table('Wildlife').filter({:Tag => tag}) }
-    animal = animal_cursor.first
+    @animal = animal_cursor.first
 
     image = params['image']
     puts 'image:'
@@ -67,7 +67,7 @@ class ObservationsController < ApplicationController
         'Location' => params['address'],
         'Latitude' => params['latitude'].to_f,
         'Longitude' => params['longitude'].to_f,
-        'WildlifeID' => animal['WildlifeID'].to_i,
+        'WildlifeID' => @animal['WildlifeID'].to_i,
         'SightingDate' => params['utc_time'].to_i,
         'SpotterID' => 101,
         'ImageUrl' => file_name
@@ -86,6 +86,17 @@ class ObservationsController < ApplicationController
         json.links do
           json.animal o['WildlifeID']
           json.observer o['SpotterID']
+        end
+      end
+      json.linked do
+        json.animals [@animal] do |a|
+          json.id a['WildlifeID']
+          json.colour a['Colour']
+          json.capture_date a['CreatedDate']
+          json.gender a['Gender']
+          json.name a['Name']
+          json.notes a['Notes']
+          json.tag a['Tag']
         end
       end
     end
