@@ -41,27 +41,5 @@ App.SubmitView = Backbone.View.extend({
   {
     event.preventDefault();
     if (this.isSubmittable) { this.trigger('sendForm'); }
-    
-    //var file = document.getElementById('camera-input');
-    //var tag = document.getElementById('animal-identifier');
-//
-    //var form = new FormData();
-    //form.append('image', file.files[0]);
-    //form.append('identifier', tag);
-    //$.ajax({
-    //  url: 'observations/new',
-    //  type: 'POST',
-    //  data: form,
-    //  processData: false,
-    //  contentType: false,
-    //  success: function(xhr)
-    //  {
-    //    console.log(xhr.data);
-    //  },
-    //  error: function(xhr)
-    //  {
-    //    console.log(xhr.data);
-    //  }
-    //});
   }
 });
