@@ -12,6 +12,9 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# Ignore precompiled assets
+/public/assets
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
