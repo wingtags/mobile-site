@@ -2,6 +2,8 @@ class ObservationsController < ApplicationController
   require 'securerandom'
   require 'aws-sdk-core'
 
+  # pointless comment
+
   def show
     @observation = NoBrainer.run{ |r| r.table('Sighting').get(params[:id]) }
     puts 'observation:'
