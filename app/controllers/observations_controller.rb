@@ -45,10 +45,14 @@ class ObservationsController < ApplicationController
   end
 
   def create
-    tag = params['tag'].to_i
+    logger.debug "=== New observation ==="
+    logger.debug "Params: #{params}"
 
+    tag = params['tag'].to_i
     animal_cursor = NoBrainer.run{ |r| r.table('Wildlife').filter({:Tag => tag}) }
     @animal = animal_cursor.first
+
+    logger.debug "Animal with tag #{tag}: #{@animal.to_s}"
 
     image = params['image']
     puts 'image:'
@@ -75,6 +79,8 @@ class ObservationsController < ApplicationController
         'ImageUrl' => file_name
       }, :return_vals => true) 
     }
+
+    logger.debug "New Observation record: #{out}"
 
     @in = [out['new_val']]
 
