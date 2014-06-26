@@ -23,6 +23,7 @@ describe("ImageView", function() {
     });
   });
 
+
   describe("when 'Add Photo' is clicked", function() {
     it("should fire a click event on the input element", function() {
       var $el = this.imageView.render().$el;
@@ -33,6 +34,7 @@ describe("ImageView", function() {
     });
   });
 
+
   describe('When an image is selected', function() {
     it('should fire a didUpdateImage event', function() {
       var spy = sinon.spy();
@@ -41,6 +43,13 @@ describe("ImageView", function() {
       var $input = this.imageView.render().$el.find('#camera-input').change();
 
       expect(spy.called).toBe(true);
+    });
+
+    it('should append an img element', function() {
+      var $el = this.imageView.render().$el;
+      $el.find('#camera-input').change();
+
+      expect($el).toContainElement('img');
     });
   });
 });

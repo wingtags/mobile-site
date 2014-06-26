@@ -13,6 +13,6 @@ JST['image'] = _.template("\
       <a href='#' id='camera-select' class='button expand'>Add Photo</a> \
     </div> \
   </div>");
-JST['thanks'] = _.template("<div class='row'> <div class='large-12 columns text-center'> <h2>You're awesome ;)</h2> <p>You've just found <strong><%= name %></strong>.</p> <p> <a href=''>Report another cockatoo</a><br /><a href='#'>Support us with a tax-deductible donation</a><br /><a href='https://www.facebook.com/CockatooWingtags'>Visit us on Facebook</a><br /> </p> </div> </div>");
+JST['thanks'] = _.template("<div class='row'> <div class='large-12 columns text-center'> <h2>You're awesome ;)</h2> <p>You've just found <strong><%= name %></strong>.</p> <p> <a href=''>Report another cockatoo</a><br /><a href='https://www.thankq.net.au/donate/v247/Donate1.aspx?ref=5617662807&pid=4'>Support us with a tax-deductible donation</a><br /><a href='https://www.facebook.com/CockatooWingtags'>Visit us on Facebook</a><br /> </p> </div> </div>");
 
 window.JST = JST;
