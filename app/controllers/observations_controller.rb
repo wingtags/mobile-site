@@ -73,9 +73,9 @@ class ObservationsController < ApplicationController
         'Location' => params['address'],
         'Latitude' => params['latitude'].to_f,
         'Longitude' => params['longitude'].to_f,
-        'WildlifeID' => @animal['WildlifeID'].to_i,
+        'WildlifeID' => @animal['WildlifeID'].to_s,
         'SightingDate' => params['utc_time'].to_i,
-        'SpotterID' => 101,
+        'SpotterID' => "1422868a-9676-4bb9-ac7c-2d51d0981b51",
         'ImageUrl' => file_name
       }, :return_vals => true) 
     }

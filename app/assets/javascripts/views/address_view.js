@@ -14,7 +14,9 @@ App.AddressView = Backbone.View.extend({
       'render',   
       '_validateOptions',
       '_setSuburb',
-      '_setStreet');
+      '_setStreet',
+      '_setAddress'
+    );
 
     this._validateOptions(options);
   },
@@ -36,10 +38,17 @@ App.AddressView = Backbone.View.extend({
 
   _setSuburb: function(event) {
     this.model.set('suburb', event.target.value);
+    this._setAddress();
   },
 
 
   _setStreet: function(event) {
     this.model.set('street', event.target.value);
+    this._setAddress();
+  },
+
+  _setAddress: function() {
+    var address = this.model.get('street') + ', ' + this.model.get('suburb');
+    this.model.set('address', address);
   }
 });
