@@ -76,7 +76,7 @@ class ObservationsController < ApplicationController
         'WildlifeID' => @animal['WildlifeID'].to_s,
         'SightingDate' => params['utc_time'].to_i,
         'SpotterID' => "1422868a-9676-4bb9-ac7c-2d51d0981b51",
-        'ImageUrl' => file_name
+        'ImageURL' => file_name
       }, :return_vals => true) 
     }
 
@@ -110,7 +110,7 @@ class ObservationsController < ApplicationController
     end
 
     respond_to do |format|
-        format.json { render :json => @result }
+      format.json { render :json => @result }
     end
   end
 end
