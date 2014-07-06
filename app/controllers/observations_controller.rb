@@ -1,6 +1,9 @@
 class ObservationsController < ApplicationController
   require 'securerandom'
   require 'aws-sdk-core'
+  require 'pry-debugger'
+
+  wrap_parameters :observations, :include => [:address]
 
   # pointless comment
 
@@ -45,19 +48,29 @@ class ObservationsController < ApplicationController
   end
 
   def create
+    # This is a hack until the multipart form upload is replaced
+    # with separate json + file upload apis so that the response
+    # can be in a nested structure
+    #if (!params['observations']) {
+    #}
+    @observations = params['observations']
+    @observations.each do |k, v|
+      @observation = v
+    end
+    #@observations = @observations.is_a? String ? JSON.parse(@observations) : @observations
+    
+    
     logger.debug "=== New observation ==="
     logger.debug "Params: #{params}"
 
-    tag = params['tag'].to_i
+    tag = @observation['tag'].to_i
     animal_cursor = NoBrainer.run{ |r| r.table('Wildlife').filter({:Tag => tag}) }
     @animal = animal_cursor.first
 
     logger.debug "Animal with tag #{tag}: #{@animal.to_s}"
 
-    image = params['image']
-    puts 'image:'
-    puts image
-    file_name = image == "undefined" ? "" : SecureRandom.uuid + File.extname(image.original_filename)
+    #image = @observation['image']
+    #file_name = image ? SecureRandom.uuid + File.extname(image.original_filename) : ""
 
     #s3 = Aws::S3.new
     #resp = s3.put_object(
@@ -70,13 +83,13 @@ class ObservationsController < ApplicationController
 
     out = NoBrainer.run{ |r| r.table('Sighting').insert(
       {
-        'Location' => params['address'],
-        'Latitude' => params['latitude'].to_f,
-        'Longitude' => params['longitude'].to_f,
+        'Location' => @observation['address'],
+        'Latitude' => @observation['latitude'].to_f,
+        'Longitude' => @observation['longitude'].to_f,
         'WildlifeID' => @animal['WildlifeID'].to_s,
-        'SightingDate' => params['utc_time'].to_i,
+        'SightingDate' => @observation['timestamp'].to_i,
         'SpotterID' => "1422868a-9676-4bb9-ac7c-2d51d0981b51",
-        'ImageURL' => file_name
+        'ImageURL' => ""
       }, :return_vals => true) 
     }
 

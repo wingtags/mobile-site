@@ -40,6 +40,7 @@ group :development, :test do
 	gem 'jasmine'	
   gem 'jasmine-jquery-rails'
   gem 'sinon-rails'
+  gem 'pry-debugger'
 
   gem 'rspec-rails'
   gem 'capybara'

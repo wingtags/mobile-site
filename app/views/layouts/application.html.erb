@@ -6,9 +6,16 @@
   <%= javascript_include_tag "application", "data-turbolinks-track" => false %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="icon" sizes="196x196" href="wingtags-logo-196x196.png">
+  <link rel="icon" sizes="128x128" href="wingtags-logo-128x128.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="wingtags-logo-76x76.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="wingtags-logo-128x128.png">
+  <link rel="apple-touch-icon" sizes="196x196" href="wingtags-logo-196x196.png">
 </head>
 <body>
-
 
 <%= yield %>
 
