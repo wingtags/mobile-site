@@ -1,7 +1,6 @@
 class ObservationsController < ApplicationController
   require 'securerandom'
   require 'aws-sdk-core'
-  require 'pry-debugger'
 
   wrap_parameters :observations, :include => [:address]
 
