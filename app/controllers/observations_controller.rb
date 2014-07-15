@@ -1,6 +1,7 @@
 class ObservationsController < ApplicationController
   require 'securerandom'
   require 'aws-sdk-core'
+  require 'rest_client'
 
   wrap_parameters :observations, :include => [:address]
 
@@ -69,17 +70,21 @@ class ObservationsController < ApplicationController
     file_name = nil
 
     if not ["", "undefined"].include? image
-      file_name = image ? SecureRandom.uuid + File.extname(image.original_filename) : ""
-      file_name = 'images/' + file_name
-      logger.debug "File name: #{file_name}"
+      #file_name = image ? SecureRandom.uuid + File.extname(image.original_filename) : ""
+      #file_name = 'images/' + file_name
+      #logger.debug "File name: #{file_name}"
 
-      s3 = Aws::S3.new
-      resp = s3.put_object(
-      {
-          bucket: 'wingtags-syd',
-          body: image,
-          key: file_name
-      })
+      response = RestClient.post 'http://api.wingtags.com/image', :img => image
+      body = JSON.parse response.body
+      file_name = body['File']
+
+      #s3 = Aws::S3.new
+      #resp = s3.put_object(
+      #{
+      #    bucket: 'wingtags-syd',
+      #    body: image,
+      #    key: file_name
+      #})
     end
     
     

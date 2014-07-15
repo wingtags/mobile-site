@@ -36,6 +36,9 @@ gem 'figaro'
 # Amazon web services
 gem 'aws-sdk-core', '~> 2.0.0.rc7'
 
+# Easier HTTP calls
+gem 'rest-client'
+
 group :development, :test do
 	gem 'jasmine'	
   gem 'jasmine-jquery-rails'
