@@ -68,9 +68,11 @@ class ObservationsController < ApplicationController
 
     logger.debug "Animal with tag #{tag}: #{@animal.to_s}"
 
-    #image = @observation['image']
-    #file_name = image ? SecureRandom.uuid + File.extname(image.original_filename) : ""
+    image = @observation['image']
+    file_name = image ? SecureRandom.uuid + File.extname(image.original_filename) : ""
+    file_name = 'image/' + file_name
 
+    logger.debug "File name: #{file_name}"
     #s3 = Aws::S3.new
     #resp = s3.put_object(
     #{
