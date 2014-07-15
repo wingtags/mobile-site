@@ -114,25 +114,25 @@ App.FormView = Backbone.View.extend({
   },
 
   preparePayload: function() {
-    var data = {
-      "observations" : [{
-        'tag': this.model.get('tag'),
-        'address': this.model.get('address'),
-        'latitude': this.model.get('latitude'),
-        'longitude': this.model.get('longitude'),
-        'image': "",//this.model.get('image'),
-        'timestamp': new Date().getTime()
-      }]
-    };
+    //var data = {
+    //  "observations" : [{
+    //    'tag': this.model.get('tag'),
+    //    'address': this.model.get('address'),
+    //    'latitude': this.model.get('latitude'),
+    //    'longitude': this.model.get('longitude'),
+    //    'image': "",//this.model.get('image'),
+    //    'timestamp': new Date().getTime()
+    //  }]
+    //};
 
-    //var data = new FormData();
+    var data = new FormData();
     ////data.append('observations', JSON.stringify(observations));
-    //data.append('tag', this.model.get('tag'));
-    //data.append('address', this.model.get('address'));
-    //data.append('latitude', this.model.get('latitude'));
-    //data.append('longitude', this.model.get('longitude'));
-    //data.append('image', this.model.get('image'));
-    //data.append('timestamp', new Date().getTime());
+    data.append('tag', this.model.get('tag'));
+    data.append('address', this.model.get('address'));
+    data.append('latitude', this.model.get('latitude'));
+    data.append('longitude', this.model.get('longitude'));
+    data.append('image', this.model.get('image'));
+    data.append('timestamp', new Date().getTime());
     //this.send(data);
     this.send(data);
   },
@@ -158,9 +158,9 @@ App.FormView = Backbone.View.extend({
     var promise = $.ajax({
       url: 'observations',
       type: 'POST',
-      data: formData//,
-      //processData: false,
-      //contentType: false
+      data: formData,
+      processData: false,
+      contentType: false
     });
 
     promise.done( this.renderThanks );

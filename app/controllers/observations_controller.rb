@@ -47,50 +47,52 @@ class ObservationsController < ApplicationController
   end
 
   def create
-    # This is a hack until the multipart form upload is replaced
-    # with separate json + file upload apis so that the response
-    # can be in a nested structure
-    #if (!params['observations']) {
-    #}
-    @observations = params['observations']
-    @observations.each do |k, v|
-      @observation = v
-    end
-    #@observations = @observations.is_a? String ? JSON.parse(@observations) : @observations
+
+    #@observations = params['observations']
+    #@observations.each do |k, v|
+    #  @observation = v
+    #end
+
+
     
     
     logger.debug "=== New observation ==="
     logger.debug "Params: #{params}"
 
-    tag = @observation['tag'].to_i
+    tag = params['tag'].to_i
     animal_cursor = NoBrainer.run{ |r| r.table('Wildlife').filter({:Tag => tag}) }
     @animal = animal_cursor.first
 
     logger.debug "Animal with tag #{tag}: #{@animal.to_s}"
 
-    image = @observation['image']
-    file_name = image ? SecureRandom.uuid + File.extname(image.original_filename) : ""
-    file_name = 'image/' + file_name
+    image = params['image']
+    file_name = nil
 
-    logger.debug "File name: #{file_name}"
-    #s3 = Aws::S3.new
-    #resp = s3.put_object(
-    #{
-    #    bucket: 'wingtags-syd',
-    #    body: image,
-    #    key: file_name
-    #})
+    if not ["", "undefined"].include? image
+      file_name = image ? SecureRandom.uuid + File.extname(image.original_filename) : ""
+      file_name = 'images/' + file_name
+      logger.debug "File name: #{file_name}"
+
+      s3 = Aws::S3.new
+      resp = s3.put_object(
+      {
+          bucket: 'wingtags-syd',
+          body: image,
+          key: file_name
+      })
+    end
+    
     
 
     out = NoBrainer.run{ |r| r.table('Sighting').insert(
       {
-        'Location' => @observation['address'],
-        'Latitude' => @observation['latitude'].to_f,
-        'Longitude' => @observation['longitude'].to_f,
+        'Location' => params['address'],
+        'Latitude' => params['latitude'].to_f,
+        'Longitude' => params['longitude'].to_f,
         'WildlifeID' => @animal['WildlifeID'].to_s,
-        'SightingDate' => @observation['timestamp'].to_i,
+        'SightingDate' => params['timestamp'].to_i,
         'SpotterID' => "1422868a-9676-4bb9-ac7c-2d51d0981b51",
-        'ImageURL' => ""
+        'ImageURL' => file_name
       }, :return_vals => true) 
     }
 
