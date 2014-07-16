@@ -146,15 +146,18 @@ App.FormView = Backbone.View.extend({
   },
 
   renderThanks: function(data) {
+    
     name = data.linked.animals[0].name;
     console.log('animal name: ', name);
     this.removeSubviews();
     var animal_id = data.observations[0].links.animal;
+    $('#spinner-modal').foundation('reveal', 'close');
     this.$el.html(JST['thanks']({name: name}));
   },
 
   send: function(formData) {
     console.log('formData: ', formData)
+
     var promise = $.ajax({
       url: 'observations',
       type: 'POST',
@@ -163,6 +166,7 @@ App.FormView = Backbone.View.extend({
       contentType: false
     });
 
+    $('#spinner-modal').foundation('reveal', 'open');
     promise.done( this.renderThanks );
   }
 });
