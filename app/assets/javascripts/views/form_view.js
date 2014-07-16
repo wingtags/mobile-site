@@ -72,7 +72,7 @@ App.FormView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.append("<div class='row'><div class='large-6 columns'><p>We here at Wingtags HQ are researching how Sulphur-crested Cockatoos have adapted to modern city life. We’re currently tracking over one hundred birds around Sydney! If you’ve seen one, tell us where so that you may delight in the warm fuzzy feeling of Science.</p></div></div>");
+    this.$el.append("<div class='row'><div class='large-6 columns'><p>Our aim is to assess Sulphur-Crested Cockatoos' habitat use and movements around Sydney.<br/>Please report your sightings of tagged cockatoos, even if it’s the same bird on the same day. All reports help to build our understanding of these characters.</p></div></div>");
     this.subviews.forEach(this.renderSubview);
     this.addCsrfToken();
     return this;
