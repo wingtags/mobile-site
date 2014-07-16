@@ -72,7 +72,7 @@ App.FormView = Backbone.View.extend({
   },
 
   render: function() {
-    this.$el.append("<div class='row'><div class='large-6 columns'><p>Our aim is to assess Sulphur-Crested Cockatoos' habitat use and movements around Sydney.<br/>Please report your sightings of tagged cockatoos, even if it’s the same bird on the same day. All reports help to build our understanding of these characters.</p></div></div>");
+    this.$el.append("<div class='row'><div class='large-6 columns'><p>Our aim is to assess Sulphur-crested Cockatoos' habitat use and movements around Sydney.<br/>Please report your sightings of tagged cockatoos, even if it’s the same bird on the same day. All reports help to build our understanding of these characters.</p></div></div>");
     this.subviews.forEach(this.renderSubview);
     this.addCsrfToken();
     return this;
