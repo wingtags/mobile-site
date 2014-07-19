@@ -8,12 +8,44 @@
   <p><%= image_tag "ajax-loader.gif" %> Saving...</p>
 </div>
 
+<div id='map'></div>
+
+<!-- 
 <script type="text/javascript">
 	$(function() {
 		console.log("Hey!");
 		App.router = new App.Router();
       	Backbone.history.start();
 	});
+</script> -->
+
+<style> #map { display:block; width:100%; height:100%; } </style>
+<script>
+  
+  $(window).load(function() {
+
+    function resizeMap() {
+      var pageWidth = $(window).innerWidth();
+      var pageHeight = $(window).innerHeight();
+    
+      var mapWidth = pageWidth;
+      var mapHeight = pageHeight - 64;
+    
+      var mapContainer = $('#map');
+      mapContainer.width(mapWidth);
+      mapContainer.height(mapHeight);
+    }
+    
+    resizeMap();
+
+    $(window).resize(function() { resizeMap(); });
+
+    var map = L.mapbox.map('map', 'examples.map-i86nkdio');
+
+    L.mapbox.featureLayer({"type":"Feature","geometry":{"type":"Point","coordinates":[151.2198078354366,-33.86390960312808]},"properties":{"name":"Lilly","sightingDate":1405657517274,"thumb":"https://wingtags-syd.s3.amazonaws.com/images/s/undefined","animal":"http://api.wingtags.com/wildlife/?tag=57"}}).addTo(map);
+  });
+  
+  
 </script>
 
 <div id="app-container"></div>
