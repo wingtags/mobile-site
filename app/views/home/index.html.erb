@@ -40,11 +40,14 @@
 
     $(window).resize(function() { resizeMap(); });
 
-    var map = L.mapbox.map('map', 'examples.map-i86nkdio');
+    var map = L.mapbox.map('map', 'examples.map-i86nkdio', {center: [-33.86918,151.215727], zoom: 13});
     var sightings = new App.Sightings();
     var geoJSON = sightings.toGeoJSON();
 
-    L.mapbox.featureLayer(geoJSON).addTo(map);
+    var featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
+    featureLayer.on('click', function(e){
+      e.layer.openPopup();
+    });
   });
   
   

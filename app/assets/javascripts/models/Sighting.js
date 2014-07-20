@@ -23,6 +23,7 @@ App.Sighting = Backbone.Model.extend({
   },
   
   toGeoJSON: function() {
+    sightingDate = new Date(this.attributes.SightingDate);
     geoJson = {
       type: "Feature",
       geometry: {
@@ -30,8 +31,8 @@ App.Sighting = Backbone.Model.extend({
         coordinates: [this.attributes.Longitude, this.attributes.Latitude]
         },
       properties: {
-        name: this.attributes.Animal.Name,
-        sightingDate: this.attributes.SightingDate,
+        title: this.attributes.Animal.Name,
+        description: sightingDate.toLocaleDateString(),
         thumb: this.attributes.ImageURL,
         animal: "http://api.wingtags.com/wildlife/?tag=" + this.attributes.Animal.Tag
       }
