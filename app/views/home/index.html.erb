@@ -41,8 +41,10 @@
     $(window).resize(function() { resizeMap(); });
 
     var map = L.mapbox.map('map', 'examples.map-i86nkdio');
+    var sightings = new App.Sightings();
+    var geoJSON = sightings.toGeoJSON();
 
-    L.mapbox.featureLayer({"type":"Feature","geometry":{"type":"Point","coordinates":[151.2198078354366,-33.86390960312808]},"properties":{"name":"Lilly","sightingDate":1405657517274,"thumb":"https://wingtags-syd.s3.amazonaws.com/images/s/undefined","animal":"http://api.wingtags.com/wildlife/?tag=57"}}).addTo(map);
+    L.mapbox.featureLayer(geoJSON).addTo(map);
   });
   
   
