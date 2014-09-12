@@ -4,53 +4,51 @@
   </div>
 </div>
 
-<div id="spinner-modal" class="reveal-modal" data-reveal>
-  <p><%= image_tag "ajax-loader.gif" %> Saving...</p>
-</div>
+<section class="main-content">
+  <div class="row centered-text">
+    <div class="large-6 columns">
+      <p>The purpose of the Wingtags Project is to understand how Sulphur-crested Cockatoos have adapted to living in the highly urban environment of Sydney by using crowdsourced reports from people like you.</p>
+      <p>Learn more ⟶</p>
+    </div>
+  </div>
+</section>
 
-<div id='map'></div>
+<section class="main-content">
+  <div class="row centered-text">
+    <div class="large-6 columns">
+      <%= link_to(new_observation_path) do %>
+        <h2>Seen a bird?</h2>
+        <p>Our birds have a large yellow tag on their wing. If you've seen one, please tell us!</p>
+      <% end %>
+    </div>
+  </div>
+</section>
 
-<!-- 
-<script type="text/javascript">
-	$(function() {
-		console.log("Hey!");
-		App.router = new App.Router();
-      	Backbone.history.start();
-	});
-</script> -->
+<section class="main-content">
+  <div class="row centered-text">
+    <div class="large-6 columns">
+      <%= link_to(observations_path) do %>
+        <h2>Sightings</h2>
+        <p>See where our birds have been about town ⟶</p>
+      <% end %>
+    </div>
+  </div>
+</section>
 
-<style> #map { display:block; width:100%; height:100%; } </style>
-<script>
-  
-  $(window).load(function() {
+<section class="main-content">
+  <div class="row centered-text">
+    <div class="large-6 columns">
+      <h2>The birds</h2>
+      <p>Papparazzi shots of our little avian celebrities ⟶</p>
+    </div>
+  </div>
+</section>
 
-    function resizeMap() {
-      var pageWidth = $(window).innerWidth();
-      var pageHeight = $(window).innerHeight();
-    
-      var mapWidth = pageWidth;
-      var mapHeight = pageHeight - 64;
-    
-      var mapContainer = $('#map');
-      mapContainer.width(mapWidth);
-      mapContainer.height(mapHeight);
-    }
-    
-    resizeMap();
-
-    $(window).resize(function() { resizeMap(); });
-
-    var map = L.mapbox.map('map', 'examples.map-i86nkdio', {center: [-33.86918,151.215727], zoom: 13});
-    var sightings = new App.Sightings();
-    var geoJSON = sightings.toGeoJSON();
-
-    var featureLayer = L.mapbox.featureLayer(geoJSON).addTo(map);
-    featureLayer.on('click', function(e){
-      e.layer.openPopup();
-    });
-  });
-  
-  
-</script>
-
-<div id="app-container"></div>
+<section class="main-content">
+  <div class="row centered-text">
+    <div class="large-6 columns">
+      <h2>Sponsorships</h2>
+      <p>Name your very own bird, plus other exclusive privledges ⟶</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+<div id="app-container"></div>
+
+<div id="spinner-modal" class="reveal-modal" data-reveal>
+  <p><%= image_tag "ajax-loader.gif" %> Saving...</p>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    console.log("Hey!");
+    App.router = new App.Router();
+        Backbone.history.start();
+  });
+</script>
