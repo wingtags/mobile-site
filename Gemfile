@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.4'
+gem 'rails', '>= 4.1.0'
 
 # Use Rethinkdb as the database for Active Record
 gem 'nobrainer'
@@ -48,7 +48,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'capybara-webkit'
-  gem 'turn'
+  #gem 'turn'
   gem 'rr'
 end
 
