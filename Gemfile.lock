@@ -151,7 +151,7 @@ GEM
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rethinkdb (1.14.0.1)
+    rethinkdb (1.15.0.0)
       json
     rr (1.1.2)
     rspec-core (3.0.2)

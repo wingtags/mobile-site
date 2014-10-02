@@ -1,7 +1,7 @@
 class User
   include NoBrainer::Document
 
-  store_in :database => 'wingtags_development', :table => 'Spotter'
+  store_in :database => ENV['RETHINKDB_DB'], :table => 'Spotter'
 
   has_many :observations
 

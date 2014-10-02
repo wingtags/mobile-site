@@ -1,6 +1,6 @@
 class Animal
   include NoBrainer::Document
-  store_in :database => 'wingtags_development', :table => 'Wildlife'
+  store_in :database => ENV['RETHINKDB_DB'], :table => 'Wildlife'
 
   has_many :observations
 

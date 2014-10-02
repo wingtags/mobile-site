@@ -4,7 +4,7 @@ class Observation
   include NoBrainer::Document
   include NoBrainer::Document::Timestamps
   
-  store_in :database => 'wingtags_development', :table => 'Sighting'
+  store_in :database => ENV['RETHINKDB_DB'], :table => 'Sighting'
 
   belongs_to :animal
 
