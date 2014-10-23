@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" style=""><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Wingtags</title>
+  <!--<link data-turbolinks-track="false" href="js/application-6bb22a16de22c40bb64110d4809b601a.css" media="all" rel="stylesheet">-->
+  <script data-turbolinks-track="false" src="js/application-40261648cefdec8cb382cc0a487c4602.js"></script>
+  <meta class="foundation-mq-small"><meta class="foundation-mq-medium"><meta class="foundation-mq-large"><style></style>
+  <meta content="authenticity_token" name="csrf-param">
+  <meta content="6H5l2eQyOosXOTdPK/5akp585ZKr0g3i/ZeJ8hC+F7k=" name="csrf-token">
+
+  <script src="js/mapbox.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="icon" sizes="196x196" href="http://beta.wingtags.com/observations/wingtags-logo-196x196.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://beta.wingtags.com/observations/wingtags-logo-76x76.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="http://beta.wingtags.com/observations/wingtags-logo-128x128.png">
+  <link rel="apple-touch-icon" sizes="196x196" href="http://beta.wingtags.com/observations/wingtags-logo-196x196.png">
+  <link href="Wingtags-Dateien/mapbox.css" rel="stylesheet">
+  <link href="http://beta.wingtags.com/assets/wingtags-logo-128x128-7972fff8387d4a7d5822fe2240302035.png" rel="icon" sizes="128x128" type="image/png">
+  <link rel="stylesheet" href="stylesheets/app.css" />
+</head>
+<body>
+
+<!-- start -->
+<nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+      <li class="name">
+        <h1><a href="index.html">Wingtags</a></h1>
+      </li>
+      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+
+    <section class="top-bar-section">
+      <!-- Right Nav Section -->
+      <ul class="right">
+        <li><a href="about.html">About</a></li>
+        <li class="divider"></li>
+        <li><a href="form.html">Seen a bird?</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Sightings</a></li>
+        <li class="divider"></li>
+        <li><a href="birds.html">The birds</a></li>
+        <li class="divider"></li>
+        <li><a href="sponsorship.html">Sponsorship</a></li>
+
+      </ul>
+
+    </section>
+  </nav>
+
+
+<div id="app-container">
+  <form action="/observations" enctype="multipart/form-data" method="POST">
+    <div class="row">
+      <div class="large-12 columns">
+        <p>Our aim is to assess Sulphur-crested Cockatoos' habitat use and movements around Sydney.<br>Please
+ report your sightings of tagged cockatoos, even if it’s the same bird 
+on the same day. All reports help to build our understanding of these 
+characters.</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="row">
+        <div class="large-12 columns">
+          <label for="animal-identifier">Tag number</label><input id="animal-identifier" name="animal-identifier" min="0" max="999" placeholder="Tag number" autofocus="" type="number">
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <div id="coordinate-template">
+          <div class="row">
+            <div class="large-12 columns">
+              <div class="panel">
+                <p><span id="gps-status">Getting Location...</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>  
+      <div class="row">     
+        <div class="large-12 columns" id="image-container">       
+          <input capture="camera" accept="image/*" id="camera-input" name="camera-input" style="display:none" type="file"><a href="#" id="camera-select" class="button expand">Add Photo</a>     
+        </div>   
+      </div>   
+      <div class="row">     
+        <div class="large-12 columns">       
+          <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4"></ul>     
+        </div>   
+      </div>
+    </div>
+    
+
+     <div>
+      <div class="row">
+          <div class="large-6 columns">
+              <input id="checkbox1" type="checkbox"><label for="checkbox1">I agree to the <a href="about.html#termsofuse" target="_blank">terms & conditions.</a> Please read our <a href="about.html#privacypolicy" target="_blank">privacy policy.</a></label>
+          </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="row">
+        <div class="large-12 columns" id="submit">
+          <input class="success button expand disabled" value="Submit" type="submit">
+        </div>
+      </div>
+    </div>
+    <input name="authenticity_token" value="6H5l2eQyOosXOTdPK/5akp585ZKr0g3i/ZeJ8hC+F7k=" type="hidden">
+  </form>
+</div>
+
+<div id="spinner-modal" class="reveal-modal" data-reveal="">
+  <p><img alt="Ajax loader" src="Wingtags-Dateien/ajax-loader-3b59e98dd32d89d77a9e17eacbc73b5d.gif"> Saving...</p>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    console.log("Hey!");
+    App.router = new App.Router();
+        Backbone.history.start();
+  });
+</script>
+
+<script src="bower_components/foundation/js/vendor/jquery.js"></script>
+<script src="bower_components/foundation/js/foundation.js"></script>
+<script src="bower_components/foundation/js/foundation/foundation.topbar.js"></script>
+<script src="js/app.js"></script>
+
+</body></html>
